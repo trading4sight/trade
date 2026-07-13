@@ -2,6 +2,30 @@
 ---
 # Changelog
 
+## 2026-07-13
+
+### Fix Paper Trading Realized P&L Withdrawal Distortion
+* **Initial Balance Adjustments**: Fixed a bug where withdrawing funds from a paper trading account incorrectly decreased the account's Realized P&L by the withdrawn amount. In [PaperBroker.ts](src/paper/PaperBroker.ts), updated `withdrawAccount` to subtract the withdrawn amount from `initialBalance` alongside the balance reduction, matching the deposit logic. This ensures Realized P&L (calculated as `balance - initialBalance`) continues to measure only trading performance.
+
+### Fix Realized P&L and Balance Refresh Latency on Paper Exits & Fills
+* **Event Dispatch Ordering**: Resolved a race condition where the Account Manager reloaded the paper state before the Paper Broker wrote changes to `localStorage` (due to `order:filled`/`order:cancelled` events being emitted before `this.saveState()`). Moved all event dispatches to execute *after* `this.saveState()` in [PaperBroker.ts](src/paper/PaperBroker.ts).
+* **Automatic State Reloading**: Configured event listeners for `positions:update`, `orders:update`, and `holdings:update` in [AccountManager.ts](src/ui/AccountManager.ts) to explicitly trigger `this.loadPaperState()` in paper mode. This ensures the summary header (Realized P&L, Available Cash, Used Margin) always updates instantly and synchronously on all background fills (limit/stop/bracket orders) without requiring manual refresh or tab switching.
+
+### Add Margin, Leverage, and Order Constraint Rules to Paper Trading
+* **Dynamic Margin Checking**: Created a unified helper [marginHelper.ts](src/utils/marginHelper.ts) to calculate required margins across equities (CNC: 100%, MIS: 20%), futures (MIS: 20%, NRML: 10%), option buyers (100% premium), and option writers (strike * quantity * leverage factor plus premium). Placed orders that exceed available balance are now flagged as `REJECTED` in [PaperBroker.ts](src/paper/PaperBroker.ts).
+* **Short Selling Restrictions**: Enforced a rule in [PaperBroker.ts](src/paper/PaperBroker.ts) blocking new equity short sales under CNC/NRML (delivery) modes unless the stock is owned by the user.
+* **Intraday Auto-Squareoff (MIS)**: Added a market-close auto-liquidation routine inside `simulateNextDay()` in [PaperBroker.ts](src/paper/PaperBroker.ts). When the overnight transition is triggered, all open MIS positions are automatically squared off at current LTP, logged to the trades history ledger, and all open MIS orders are cancelled.
+* **Dynamic UI Sync**: Integrated margin calculation helper into [AccountManager.ts](src/ui/AccountManager.ts) to ensure the funds bar (available cash, used margin) aligns exactly with the broker's internally computed balances.
+
+### Add Fyers-Style Brokerage Charges & Custom Overrides to Paper Trading
+* **Transaction Charges Engine**: Implemented a comprehensive `calculateTradeCharges()` function in [marginHelper.ts](src/utils/marginHelper.ts) that computes Brokerage, STT/CTT, Exchange Transaction Charges, SEBI Fee (₹10/crore), Stamp Duty (buy-side only), and GST (18%) for all Indian market segments (Equity CNC/MIS, F&O Futures/Options, Commodity, Currency).
+* **Broker Presets**: Added three built-in pricing templates — **Fyers** (0.3%/₹20 CNC, 0.03%/₹20 MIS/FUT, flat ₹20 Options), **Zerodha** (₹0 CNC, 0.03%/₹20 MIS/FUT, flat ₹20 Options), and **Zero Brokerage** (only statutory taxes, no brokerage).
+* **Full Custom Overrides**: Added a "Custom Override Rates" option with separate editable fields for Equity CNC (% + cap), Equity MIS/FUT (% + cap), Options (flat ₹), and Commodity/Currency (% + cap) in the Account Manager settings popover.
+* **Charge Settings Types**: Extended [types.ts](src/paper/types.ts) with `ChargeSettings`, `CustomCharges` interfaces and added `charges?: number` to `PaperOrder` and `JournalEntry`.
+* **Auto-Deduction on Fills**: Updated [PaperBroker.ts](src/paper/PaperBroker.ts) to compute and deduct charges on every market order fill, limit/stop trigger, and MIS auto-squareoff. Each charge deduction is logged as a separate balance history row.
+* **Settings UI**: Added a "Paper Brokerage Charges" section in the Account Manager settings popover in [AccountManager.ts](src/ui/AccountManager.ts) with an ON/OFF toggle, preset dropdown, and expandable custom fields. Settings persist via `localStorage` and sync to the broker engine via eventBus.
+* **Trades Column**: Fixed the Trades tab to display actual computed charges per trade instead of hardcoded zero.
+
 ## 2026-07-11
 
 ### Fix Crypto WebSocket Connections & Streaming
