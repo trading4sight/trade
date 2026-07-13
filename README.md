@@ -2,6 +2,85 @@
 ---
 # Changelog
 
+## 2026-07-11
+
+### Fix Crypto WebSocket Connections & Streaming
+* **Market Hours Integration**: Added explicit 24/7 continuous trading support for the `CRYPTO` exchange inside [marketHours.ts](src/utils/marketHours.ts). This bypasses weekends and holidays, ensuring that the WebSocket watchdog client stays active and the chart displays the correct "Market open 24/7" status in the legend.
+* **Casing Normalization**: Updated [wsClient.ts](src/openalgo/wsClient.ts) to convert symbol and exchange subscription keys to uppercase to prevent matching mismatches from casing differences in incoming broker payloads.
+* **Mode 1 (LTP) Fallback Support**: 
+  * Subscribed to Mode 1 (LTP) alongside Mode 2 (Quote) and Mode 3 (Depth) **exclusively for the `CRYPTO` exchange** in both [chartInit.ts](src/chart/chartInit.ts) and [OrderPanel.ts](src/ui/OrderPanel.ts).
+  * Programmed [wsClient.ts](src/openalgo/wsClient.ts) to map and emit Mode 1 (LTP) ticks as `tick:update` events if the exchange is `CRYPTO`. This ensures the chart draws candles and updates the Order Panel LTP field in real-time, even if the crypto broker's WebSocket feed only streams LTP updates.
+  * Preserved full isolation for NSE/BSE markets to guarantee zero impact on standard Indian trading indices and equities.
+* **Case-Insensitive Event Matching**: Updated [chartInit.ts](src/chart/chartInit.ts) and [OrderPanel.ts](src/ui/OrderPanel.ts) tick event handlers to compare symbol and exchange strings case-insensitively using `.toUpperCase()`.
+* **Order Book Fallback LTP**: Implemented automatic fallback LTP calculation inside [wsClient.ts](src/openalgo/wsClient.ts) for Mode 3 (Depth Mode) events. If `data.ltp` is missing or `0` (which occurs initially when the Python adapter's ticker cache isn't populated), the client extracts and averages the best bid and best ask directly from the depth book levels, streaming a valid non-zero LTP.
+* **Order Panel Defensive Filtering**: Updated [OrderPanel.ts](src/ui/OrderPanel.ts) real-time tick listeners to explicitly ignore any incoming tick where LTP is `0` or less, preventing valid states from being overwritten.
+* **Case-Insensitive Unsubscribe Safeguard**: Updated the WebSocket client's `unsubscribe` handler inside [wsClient.ts](src/openalgo/wsClient.ts) to execute case-insensitive matching for active chart and position symbols, preventing accidental stream drops.
+* **Watchdog Loop & Re-subscription Fixes**:
+  * Configured the WebSocket's `subscribe` handler in [wsClient.ts](src/openalgo/wsClient.ts) to reset the `lastMessageAt` timestamp to the current time when incrementing an existing subscription's `refCount`. This prevents the watchdog from evaluating newly updated subscriptions as stale and triggering infinite re-subscription cycles.
+  * Programmed the client to update `lastMessageAt` for **all three modes** (LTP, Quote, Depth) of a symbol whenever any real-time feed message is received for it. This prevents sparse data feeds from starving the watchdog and triggering broker disconnections.
+* **Diagnostics**: Added raw WebSocket payload logging (`wsClient: Received WS message:`) to [wsClient.ts](src/openalgo/wsClient.ts) during debugging, which has now been removed for optimal performance.
+
+### DOM Ladder Auto-Refresh & Price Realignment
+* **DOM Ladder Grid Alignment**:
+  * Rounded the DOM's `basePrice` to the nearest `tickSize` multiple in [OrderPanel.ts](src/ui/OrderPanel.ts) to align scrollable price levels precisely with the order book's round price tick levels.
+  * Snapped individual order book bid and ask prices to the nearest `tickSize` multiple when executing cell quantity searches, preventing exact-match misses caused by fractional ticks and successfully displaying the order book depth in DOM columns.
+* **DOM Ladder Auto-Refresh & Focus Preservation**:
+  * Wired the scrollable DOM ladder to automatically trigger `render()` inside real-time `tick:ltp`, `tick:update`, and `tick:depth` event handlers if the active tab is `DOM`. This ensures prices, bid/ask quantities, and highlighted LTP lines auto-refresh in real-time.
+  * Added focus-preservation checks in the `render` lifecycle to prevent user typing interruptions or focus loss inside the DOM's Quantity input field.
+  * Cleaned up unused private fields `domGridEl` and `domLtpEl` to comply with TS strict lint rules.
+
+### Persist Chart Drawing Layouts in Browser Storage
+* **Automatic Drawings Persistence**: Implemented an automatic drawing layout persistence engine in [ChartManager.ts](src/chart/ChartManager.ts) using browser `localStorage` keyed per symbol and exchange (`openchart_drawings_<EXCHANGE>:<SYMBOL>`).
+* **Drawing Tool Whitelisting**: Whitelisted the 16 user drawing tools for persistence (Trendline, Horizontal Line/Ray, Vertical Line, Fibonacci Line, Rectangle, Arrow, Brush, Circle, Text, Date/Price Range, TPO, Volume Profiles, Volume Cluster) while strictly excluding broker-managed system overlays (active orders, positions, projections, and execution marks).
+* **Workspace Event Integration**: Programmed drawings to load automatically on chart mount and symbol change events, and auto-save on drawing completions, moves, deletions, and Undo/Redo history events.
+
+### Improve Symbol Search Usability
+* **Search Input Auto-Focus**: Added an `afterRender()` lifecycle override inside [SymbolSearchModal.ts](src/ui/SymbolSearchModal.ts) that automatically focuses the search input field as soon as the modal is opened. This eliminates the requirement to manually click inside the input box, allowing the user to start typing to filter symbols immediately.
+* **Typing Focus Maintenance**: Configured the auto-focus logic to place the selection range at the end of the current text value, ensuring typing focus and cursor position are perfectly preserved across real-time list re-renders.
+
+### Mode-Switch Symbol Selection Isolation
+* **Mode Selection Persistence**: Added `openchart_last_online_selection` and `openchart_last_offline_selection` states inside [ChartManager.ts](src/chart/ChartManager.ts) to isolate active symbols between online and offline modes.
+* **Smart Restorations**: Switching from offline to online mode automatically restores the user's last viewed live broker symbol (e.g. `BTCUSDFUT` or `NIFTY`). Switching to offline mode restores their last viewed local symbol (e.g. `SBIN-EQ`).
+* **Empty Local State Safety Guard**: Added a safety check in the offline mode transition. If no CSV folders have been imported, it resets the chart canvas to blank, displays the helper status banner prompting to import a CSV folder, and automatically triggers the Symbol Search modal.
+
+### Custom Paper Trading Account Balance
+* **Custom Balance Select Option**: Added a "Custom Amount..." option inside the Paper Trading Reset dropdown select menu in [AccountManager.ts](src/ui/AccountManager.ts).
+* **Dynamic Custom Balance Input**: Implemented a numeric input field styled in accordance with vanilla CSS that automatically displays when "Custom Amount..." is selected in the settings popover, allowing the user to enter any positive customized funds amount.
+* **Account Balance Reset**: Integrated input validation and confirmation checks to fully wipe trade records and reset the Account Manager summary fields (Available Margin, Unrealized P&L, etc.) to the user's customized amount.
+
+### Add & Withdraw Paper Trading Funds
+* **Add / Withdraw Control Panel**: Integrated an "Add / Withdraw Funds" section inside the settings popover in [AccountManager.ts](src/ui/AccountManager.ts).
+* **Funds Adjuster Actions**: Added click listeners for Add and Withdraw buttons that parse positive input amounts and emit `paper-account:deposit` / `paper-account:withdraw` events.
+* **Cash-Trade Transaction Recording**: Implemented `depositAccount` and `withdrawAccount` handlers in [PaperBroker.ts](src/paper/PaperBroker.ts) that update the paper trading account cash balance, update its ledger history (`balanceHistory`), and record a simulated transaction as a cash trade (on the `CASH` exchange with `BUY` for deposits and `SELL` for withdrawals). This lists deposits and withdrawals directly under the **Trades** tab for a completely realistic paper-trading ledger experience.
+
+## 2026-07-10
+
+### Persist Active Chart Symbol and Timeframe Selection
+* Added automatic browser `localStorage` persistence for the active chart symbol selection (symbol, exchange, and timeframe/fileCode).
+* Registered a global `symbol:change` event listener inside [main.ts](src/main.ts) that automatically saves active selection changes to `openchart_last_selection`.
+* Updated `getDefaultSymbolSelection` inside [symbols.ts](src/config/symbols.ts) to retrieve and initialize the chart workspace with this saved selection on startup, ensuring the exact same chart state is restored upon page reload or reopening.
+
+### Restrict Timeframe Selection to Broker Supported Intervals
+* Restructured the top bar timeframe selection in [TopBar.ts](src/ui/TopBar.ts) to display only timeframe intervals supported by the connected broker.
+* Added `fetchSupportedIntervals` to [TopBar.ts](src/ui/TopBar.ts) to query the OpenAlgo `/intervals` endpoint when the app boots, switches to online mode, or when the WebSocket connection is authenticated (`ws:authenticated`).
+* Mapped OpenAlgo interval formats (seconds, minutes, hours, days, weeks, months) to the project's internal `FileCode` structure, with built-in auto-sorting and a fallback mechanism to prevent invalid active timeframes.
+
+### Fix WebSocket Disconnection on Active Chart Symbol & Active Positions
+* Fixed real-time WebSocket data streaming freezing for the chart and other panels when a paper position exits or is closed, and ensured active positions/holdings are never unsubscribed from Mode 2 (Quote) so the Account Manager can continuously calculate unrealized P&L and metrics (LTP, P&L, P&L %).
+* Emitted the `active-symbols:update` event from [AccountManager.ts](src/ui/AccountManager.ts) containing all active positions and holdings symbols (both paper and live).
+* Added `activePositionSymbols` tracking and constructor listener in [wsClient.ts](src/openalgo/wsClient.ts) for `active-symbols:update`.
+* Modified the `unsubscribe` method in [wsClient.ts](src/openalgo/wsClient.ts) to prevent the subscription refCount for the active chart symbol (Mode 2 & 3) and active position/holding symbols (Mode 2) from dropping below 1. This ensures they are never unsubscribed from the WebSocket server while active, preserving tick streams for chart, order, and account components.
+
+### Fix Execution Mark Hover Crash & Correct Paper Exit Times
+* Fixed an uncaught `TypeError: Cannot read properties of undefined (reading 'clientX')` in `Custom.onMouseEnter` inside [executionMark.ts](src/overlays/executionMark.ts) that crashed chart rendering when hovering over trade execution marks. Corrected lookup to access `clientX`/`clientY` directly from the event parameter object.
+* Fixed paper trading exit trades incorrectly displaying the entry/placement timestamp in the trade log table instead of the actual fill/exit execution time. Updated `checkFills()` inside [PaperBroker.ts](src/paper/PaperBroker.ts) to set `o.timestamp = Date.now()` when pending limit/stop orders are transitioned to `FILLED` status. This aligns the execution exit marks with their correct candles.
+
+### Fix Live Stream Updates & Watchdog Warning Starvation
+* Fixed WebSocket watchdog timing out with `No ticks received for ... Mode 2` warnings when the Trading Panel is opened. Root cause: subscribing to Mode 3 (Depth Mode) suppresses Mode 2 (Quote Mode) messages from the broker, starving the watchdog and chart listeners of Quote updates.
+* Updated [wsClient.ts](src/openalgo/wsClient.ts) to automatically update the `lastMessageAt` timestamp of both Mode 1 (LTP) and Mode 2 (Quote) subscriptions whenever a Mode 3 message is received.
+* Enhanced `handleMessage` in [wsClient.ts](src/openalgo/wsClient.ts) to forward price updates from Mode 3 messages, emitting `tick:ltp` and `tick:update` events to keep the chart candles streaming and the Order Panel LTP field displaying live numeric values instead of `--`.
+* Removed debug console logs in [wsClient.ts](src/openalgo/wsClient.ts) to keep the terminal and browser console clean.
+
 ## 2026-07-02
 
 ### Interactive Brackets Click Button Wiring Fix
