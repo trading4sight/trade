@@ -2,6 +2,40 @@
 ---
 # Changelog
 
+## 2026-07-15
+
+### Upgrade to Stable KlineCharts v10.0.0
+- **Package Update**: Upgraded `klinecharts` dependency to `^10.0.0` in [package.json](file:///d:/Devs/codetest-og/klinecharts-v10.0.0-beta3/package.json).
+- **v10.0.0 API Adaptations**: Updated [ChartManager.ts](file:///d:/Devs/codetest-og/klinecharts-v10.0.0-beta3/src/chart/ChartManager.ts) to comply with the stable v10.0.0 signature for `createIndicator`, where the `pane` options parameter was simplified back to the boolean `isStack`, requiring the pane ID to be passed directly on the indicator configuration object (`paneId: 'candle_pane'`) or configured post-creation via `setPaneOptions`.
+
+### Optimize OpenAlgo WebSocket Reconnections
+- **Backoff Reset Safeguard**: Moved the WebSocket connection backoff reset (`reconnectDelay = 1000`) in [wsClient.ts](file:///d:/Devs/codetest-og/klinecharts-v10.0.0-beta3/src/openalgo/wsClient.ts) from `handleOpen` to the successful authentication event block. This prevents rapid, close-proximity reconnect loops (flooding the OpenAlgo server) if the connection opens successfully but immediately fails authentication due to an incorrect or missing API key.
+
+### Implement Precise Fyers Brokerage & Transaction Charges
+- **Precise Transaction Mappings**: Updated the charge calculation engine in [marginHelper.ts](src/utils/marginHelper.ts) to calculate precise Fyers and Custom preset transaction charges. This includes matching Fyers' combined Exchange Transaction Charges and Clearing Member (CM) fees (e.g. 0.0445299% for NSE options, 0.0918% for MCX options), tiny NSE IPFT charges, MCX options CTT of 0.05% on premium, and correct per-side rounding to the nearest whole rupee for STT and Stamp Duty.
+
+### Fix Real-time Account Manager Updates & CORS Margin Errors
+- **String Price in Margin API**: Updated the pre-trade margin lookup payload inside [OrderPanel.ts](src/ui/OrderPanel.ts) to format option/equity prices as strings (e.g. `String(price)`). This resolves the `POST /api/v1/margin 400 (Bad Request)` errors returned by OpenAlgo's strict schema validator.
+- **Fyers Market Order LimitPrice Validation**: Corrected the price payload parameter to be exactly `'0'` for market orders during pre-trade margin calculations (matching live order placement behavior). This resolves the Fyers API validation error `Fyers API Error (Code -50): limitPrice does not match: 0` that occurred because the platform mistakenly passed the non-zero market LTP. It also prevents network call flooding on every tick since the cache key for market orders now remains constant.
+- **Optimized UI Tick Update Frequency**: Removed high-frequency `localStorage` reads (`this.loadPaperState()`) from `positions:update`, `holdings:update`, and `orders:update` handlers inside [AccountManager.ts](src/ui/AccountManager.ts). Real-time websocket ticks now update the in-memory state directly without being choked or overwritten by disk reads, enabling smooth live Unrealized P&L and LTP updates.
+
+### Fix Paper Position Exit Margin Check
+- **Zero Margin for Exits**: Updated the paper trading broker's order validation in [PaperBroker.ts](src/paper/PaperBroker.ts) to bypass or offset the required margin calculation for exit or risk-reducing orders (selling existing long positions/holdings, or buying back short positions). This resolves the issue where closing a position mistakenly calculated option-writing or new position margin and blocked the user with an "Insufficient Margin" error.
+
+### Fix Chart Freeze on Position Exit
+- **Preserve Reconnection Subscriptions**: Added a `clearSubs` parameter to `disconnect()` in [wsClient.ts](src/openalgo/wsClient.ts) and set it to `false` during target URL/API key changes in `connect()`. This prevents the client subscriptions map from being wiped out during initial startup or socket parameters re-evaluation, ensuring the chart's Mode 2 subscription remains in the tracker.
+- **Active Chart Symbol Fallback**: Added a fallback in `wsClient.ts` to retrieve the active chart symbol from `localStorage` (`openchart_last_selection`) if the in-memory `activeChartSymbol` is not yet populated by events. This guarantees that `unsubscribe` calls from the Account Manager when closing positions never reduce the active chart's subscription reference count below `1`.
+- **Misleading Offline Badge**: Corrected the connection state badge logic in [AccountManager.ts](src/ui/AccountManager.ts) to check the general `openchart_mode` instead of the active position subscriptions count, preventing the pill from visually displaying "Offline" when the user has no active trades.
+- **Removed Watchdog Console Spam**: Cleaned up the diagnostic console logs in [wsClient.ts](src/openalgo/wsClient.ts) so that the watchdog checks are silent during normal operation, only outputting connection/status changes, warnings, and errors.
+
+### OpenAlgo Endpoints & Alerts Integration
+- **Connection Validation via REST Ping**: Added connectivity verification before toggling Online mode inside `TopBar.ts`, and a visual "Test Connection" diagnostics check in the `SettingsModal.ts` OpenAlgo tab.
+- **Precise Dynamic Margins**: Integrated dynamic margins in `OrderPanel.ts` for F&O derivative contracts using the `POST /api/v1/margin` endpoint.
+- **Symbol Metadata Constraints**: Added support for fetching lot size, tick size, and freeze limits via `POST /api/v1/symbol` to dynamically configure price snapping steps and enforce validation constraints inside `OrderPanel.ts`.
+- **AccountManager Batch Quotes**: Integrated batch quote fetching via `POST /api/v1/multiquotes` upon initial position/holding load in `AccountManager.ts` to populate true P&L before live socket ticks are received.
+- **Telegram & WhatsApp Paper Trading Alerts**: Integrated optional paper trade alerts triggered on simulated fills inside `PaperBroker.ts` using the OpenAlgo `POST /api/v1/telegram/notify` and `POST /api/v1/whatsapp/notify` endpoints.
+- **Horizontal Line Price Alerts**: Integrated price crossing alerts on horizontal line overlays in `ChartManager.ts`. Active alerts draw a 🔔 icon adjacent to lines, play an audio warning tone, show a status toast, and dispatch Telegram/WhatsApp notifications.
+
 ## 2026-07-13
 
 ### Fix Paper Trading Realized P&L Withdrawal Distortion
