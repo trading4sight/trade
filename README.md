@@ -7,9 +7,6 @@
 ### Margin Calculation Fixes
 - **Index Spot Margin Bypass**: Added a check in [src/ui/OrderPanel.ts](/src/ui/OrderPanel.ts) to skip querying the OpenAlgo live API for margin requirements when the active symbol is a spot index indicator (whose exchange matches `*INDEX`), preventing `400 Bad Request` network warnings in the browser console.
 
-### Chart Greeting Customization
-- **Console Welcome Banner**: Intercepted the default console greeting during chart initialization inside [src/chart/chartInit.ts](/src/chart/chartInit.ts) to rename `"Welcome to klinecharts."` to `"Welcome to YSTC Charts."`.
-
 ### Fyers Prime Brokerage Charges Preset
 - **Brokerage Presets**: Added the **Fyers Prime** template option, supporting discounted flat/capped brokerage of **₹15** (options flat ₹15, futures/intraday/delivery capped at ₹15) while keeping statutory taxes identical.
 - **Fyers Standard Renaming**: Renamed the default "Fyers" user-facing dropdown label to "Fyers Standard".
