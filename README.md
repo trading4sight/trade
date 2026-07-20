@@ -4,8 +4,7 @@
 
 ## 2026-07-20
 
-### Title Tag & Margin Calculation Fixes
-- **Application Title**: Updated the HTML shell `<title>` tag inside [index.html](/index.html) from `"klinecharts-v10.0.0"` to `"YSTC Charts"`.
+### Margin Calculation Fixes
 - **Index Spot Margin Bypass**: Added a check in [src/ui/OrderPanel.ts](/src/ui/OrderPanel.ts) to skip querying the OpenAlgo live API for margin requirements when the active symbol is a spot index indicator (whose exchange matches `*INDEX`), preventing `400 Bad Request` network warnings in the browser console.
 
 ### Chart Greeting Customization
