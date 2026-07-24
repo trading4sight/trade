@@ -1,0 +1,283 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="trendline" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M7.354 21.354l14-14-.707-.707-14 14z" />
+      <path d="M22.5 7c.828 0 1.5-.672 1.5-1.5S23.328 4 22.5 4 21 4.672 21 5.5 21.672 7 22.5 7zm0 1C21.119 8 20 6.881 20 5.5S21.119 3 22.5 3 25 4.119 25 5.5 23.881 8 22.5 8zM5.5 24c.828 0 1.5-.672 1.5-1.5S6.328 21 5.5 21 4 21.672 4 22.5 4.672 24 5.5 24zm0 1C4.119 25 3 23.881 3 22.5S4.119 20 5.5 20 8 21.119 8 22.5 6.881 25 5.5 25z" />
+    </g>
+  </symbol>
+  <symbol id="horizontal-line" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M4 15h8.5v-1H4zM16.5 15H25v-1h-8.5z" />
+      <path d="M14.5 16c.828 0 1.5-.672 1.5-1.5S15.328 13 14.5 13 13 13.672 13 14.5s.672 1.5 1.5 1.5zm0 1c-1.381 0-2.5-1.119-2.5-2.5S13.119 12 14.5 12s2.5 1.119 2.5 2.5S15.881 17 14.5 17z" />
+    </g>
+  </symbol>
+  <symbol id="horizontal-ray" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M8.5 15H25v-1H8.5z" />
+      <path d="M6.5 16c.828 0 1.5-.672 1.5-1.5S7.328 13 6.5 13 5 13.672 5 14.5 5.672 16 6.5 16zm0 1C5.119 17 4 15.881 4 14.5S5.119 12 6.5 12 9 13.119 9 14.5 7.881 17 6.5 17z" />
+    </g>
+  </symbol>
+  <symbol id="vertical-line" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M15 12.5V4h-1v8.5zM14 16.5V25h1v-8.5z" />
+      <path d="M14.5 16c.828 0 1.5-.672 1.5-1.5S15.328 13 14.5 13 13 13.672 13 14.5s.672 1.5 1.5 1.5zm0 1c-1.381 0-2.5-1.119-2.5-2.5S13.119 12 14.5 12s2.5 1.119 2.5 2.5S15.881 17 14.5 17z" />
+    </g>
+  </symbol>
+  <symbol id="fib-retracement" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M3 5h22V4H3zM3 17h22v-1H3zM3 11h19.5v-1H3zM5.5 23H25v-1H5.5z" />
+      <path d="M3.5 24c.828 0 1.5-.672 1.5-1.5S4.328 21 3.5 21 2 21.672 2 22.5 2.672 24 3.5 24zm0 1C2.119 25 1 23.881 1 22.5S2.119 20 3.5 20 6 21.119 6 22.5 4.881 25 3.5 25zM24.5 12c.828 0 1.5-.672 1.5-1.5S25.328 9 24.5 9 23 9.672 23 10.5s.672 1.5 1.5 1.5zm0 1c-1.381 0-2.5-1.119-2.5-2.5S23.119 8 24.5 8 27 9.119 27 10.5 25.881 13 24.5 13z" />
+    </g>
+  </symbol>
+  <symbol id="gann-box" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M3.5 11h21v-1h-21zM3.5 18h21v-1h-21zM10 3.5v21h1v-21zM17 3.5v21h1v-21zM22.5 4V3H3v19.5h1V4zM24 24H5.493v1H25V5.5h-1z" />
+      <path d="M3.5 26c.828 0 1.5-.672 1.5-1.5S4.328 23 3.5 23 2 23.672 2 24.5 2.672 26 3.5 26zm0 1C2.119 27 1 25.881 1 24.5S2.119 22 3.5 22 6 23.119 6 24.5 4.881 27 3.5 27zM24.5 5c.828 0 1.5-.672 1.5-1.5S25.328 2 24.5 2 23 2.672 23 3.5 23.672 5 24.5 5zm0 1C23.119 6 22 4.881 22 3.5S23.119 1 24.5 1 27 2.119 27 3.5 25.881 6 24.5 6z" />
+    </g>
+  </symbol>
+  <symbol id="date-price-range" viewBox="0 0 28 28">
+    <g fill="currentColor">
+      <path fill-rule="nonzero" d="M6.5 23v1H24v-17.5h-1V23zM21.5 5V4H4v17.5h1V5z" />
+      <path fill-rule="nonzero" d="M4.5 25c.828 0 1.5-.672 1.5-1.5S5.328 22 4.5 22 3 22.672 3 23.5 3.672 25 4.5 25zm0 1C3.119 26 2 24.881 2 23.5S3.119 21 4.5 21 7 22.119 7 23.5 5.881 26 4.5 26zM23.5 6c.828 0 1.5-.672 1.5-1.5S24.328 3 23.5 3 22 3.672 22 4.5 22.672 6 23.5 6zm0 1C22.119 7 21 5.881 21 4.5S22.119 2 23.5 2 26 3.119 26 4.5 24.881 7 23.5 7z" />
+      <path fill-rule="nonzero" d="M13 9v13h1V9zM19 14H6v1h13z" />
+      <path d="M13.5 6 16 9h-5zM19 17v-5l3 2.5z" />
+    </g>
+  </symbol>
+  <symbol id="fixed-range-volume-profile" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M5 21.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM3.5 24a2.5 2.5 0 0 0 .5-4.95V3H3v16.05A2.5 2.5 0 0 0 3.5 24zM25 5.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zM23.5 3a2.5 2.5 0 0 1 .5 4.95V24h-1V7.95A2.5 2.5 0 0 1 23.5 3z" />
+    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M9 7H4v2h5V7zM3 6v4h7V6H3z" />
+    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M12 10H4v2h8v-2zM3 9v4h10V9H3z" />
+    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M7 13H4v2h3v-2zm-4-1v4h5v-4H3z" />
+  </symbol>
+  <symbol id="session-volume-profile" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M6 5h6v4h4v4h7v5h-5v4H6V5Zm1 1h4v3H7V6Zm0 4v3h8v-3H7Zm15 4v3H7v-3h15Zm-5 7v-3H7v3h10Z"></path>
+  </symbol>
+  <symbol id="fixed-range-tpo-profile" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M11 9h8v4h4v5h-4v4H6V5h5v4Zm-1-3H7v3h3V6Zm8 12v3h-3v-3h3Zm1-4v3h3v-3h-3Zm-1-1v-3h-3v3h3Zm-3 1h3v3h-3v-3Zm-1 0v3h-3v-3h3Zm0 4v3h-3v-3h3Zm0-5h-3v-3h3v3Zm-4 8v-3H7v3h3Zm0-4H7v-3h3v3Zm0-7v3H7v-3h3Z"></path>
+    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M5 23.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM3.5 26a2.5 2.5 0 0 0 .5-4.95V5H3v16.05A2.5 2.5 0 0 0 3.5 26zM27.5 7.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zM26 5a2.5 2.5 0 0 1 .5 4.95V26h-1V9.95A2.5 2.5 0 0 1 26 5z"></path>
+  </symbol>
+  <symbol id="time-price-opportunity" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M11 9h8v4h4v5h-4v4H6V5h5v4Zm-1-3H7v3h3V6Zm8 12v3h-3v-3h3Zm1-4v3h3v-3h-3Zm-1-1v-3h-3v3h3Zm-3 1h3v3h-3v-3Zm-1 0v3h-3v-3h3Zm0 4v3h-3v-3h3Zm0-5h-3v-3h3v3Zm-4 8v-3H7v3h3Zm0-4H7v-3h3v3Zm0-7v3H7v-3h3Z"></path>
+  </symbol>
+  <symbol id="volume-footprint" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M9 4H8v3H6.5a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5H8v3h1v-3h1.5a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5H9V4ZM7 8v11h3V8H7Zm7-1h9v1h-9V7Zm9 4h-9v1h9v-1Zm-9 4h9v1h-9v-1Zm9 4h-9v1h9v-1Z"></path>
+  </symbol>
+  <symbol id="brush" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M1.789 23l.859-.854.221-.228c.18-.19.38-.409.597-.655.619-.704 1.238-1.478 1.815-2.298.982-1.396 1.738-2.776 2.177-4.081 1.234-3.667 5.957-4.716 8.923-1.263 3.251 3.785-.037 9.38-5.379 9.38h-9.211zm9.211-1c4.544 0 7.272-4.642 4.621-7.728-2.45-2.853-6.225-2.015-7.216.931-.474 1.408-1.273 2.869-2.307 4.337-.599.852-1.241 1.653-1.882 2.383l-.068.078h6.853zM18.182 6.002l-1.419 1.286c-1.031.935-1.075 2.501-.096 3.48l1.877 1.877c.976.976 2.553.954 3.513-.045l5.65-5.874-.721-.693-5.65 5.874c-.574.596-1.507.609-2.086.031l-1.877-1.877c-.574-.574-.548-1.48.061-2.032l1.419-1.286-.672-.741z" />
+    </g>
+  </symbol>
+  <symbol id="arrow" viewBox="0 0 28 28">
+    <g fill="currentColor">
+      <path fill-rule="nonzero" d="M7.354 21.354l14-14-.707-.707-14 14z" />
+      <path d="m21 7-8 3 5 5z" />
+      <path fill-rule="nonzero" d="M22.5 7c.828 0 1.5-.672 1.5-1.5S23.328 4 22.5 4 21 4.672 21 5.5 21.672 7 22.5 7zm0 1C21.119 8 20 6.881 20 5.5S21.119 3 22.5 3 25 4.119 25 5.5 23.881 8 22.5 8zM5.5 24c.828 0 1.5-.672 1.5-1.5S6.328 21 5.5 21 4 21.672 4 22.5 4.672 24 5.5 24zm0 1C4.119 25 3 23.881 3 22.5S4.119 20 5.5 20 8 21.119 8 22.5 6.881 25 5.5 25z" />
+    </g>
+  </symbol>
+  <symbol id="rectangle" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M7.5 6h13V5h-13zM7.5 23h13v-1h-13zM5 7.5v13h1v-13zM22 7.5v13h1v-13z" />
+      <path d="M5.5 7c.828 0 1.5-.672 1.5-1.5S6.328 4 5.5 4 4 4.672 4 5.5 4.672 7 5.5 7zm0 1C4.119 8 3 6.881 3 5.5S4.119 3 5.5 3 8 4.119 8 5.5 6.881 8 5.5 8zM22.5 7c.828 0 1.5-.672 1.5-1.5S23.328 4 22.5 4 21 4.672 21 5.5 21.672 7 22.5 7zm0 1C21.119 8 20 6.881 20 5.5S21.119 3 22.5 3 25 4.119 25 5.5 23.881 8 22.5 8zM22.5 24c.828 0 1.5-.672 1.5-1.5S23.328 21 22.5 21 21 21.672 21 22.5 21.672 24 22.5 24zm0 1c-1.381 0-2.5-1.119-2.5-2.5S21.119 20 22.5 20s2.5 1.119 2.5 2.5-1.119 2.5-2.5 2.5zM5.5 24c.828 0 1.5-.672 1.5-1.5S6.328 21 5.5 21 4 21.672 4 22.5 4.672 24 5.5 24zm0 1C4.119 25 3 23.881 3 22.5S4.119 20 5.5 20 8 21.119 8 22.5 6.881 25 5.5 25z" />
+    </g>
+  </symbol>
+  <symbol id="circle" viewBox="0 0 28 28">
+    <path stroke="currentColor" d="M16 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+    <path fill="currentColor" fill-rule="evenodd" d="M4.5 14a9.5 9.5 0 0 1 18.7-2.37 2.5 2.5 0 0 0 0 4.74A9.5 9.5 0 0 1 4.5 14Zm19.7 2.5a10.5 10.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5ZM22.5 14a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clip-rule="evenodd" />
+  </symbol>
+  <symbol id="triangle" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="nonzero">
+      <path d="M8.5 23h11v-1h-11zM6 8.5v12h1v-12zM7.483 8.28l12.293 13.112.73-.684-12.293-13.112z" />
+      <path d="M6.5 8c.828 0 1.5-.672 1.5-1.5S7.328 5 6.5 5 5 5.672 5 6.5 5.672 8 6.5 8zm0 1C5.119 9 4 7.881 4 6.5S5.119 4 6.5 4 9 5.119 9 6.5 7.881 9 6.5 9zM6.5 24c.828 0 1.5-.672 1.5-1.5S7.328 21 6.5 21 5 21.672 5 22.5 5.672 24 6.5 24zm0 1C5.119 25 4 23.881 4 22.5S5.119 20 6.5 20 9 21.119 9 22.5 7.881 25 6.5 25zM21.5 24c.828 0 1.5-.672 1.5-1.5S22.328 21 21.5 21 20 21.672 20 22.5 20.672 24 21.5 24zm0 1c-1.381 0-2.5-1.119-2.5-2.5S20.119 20 21.5 20s2.5 1.119 2.5 2.5-1.119 2.5-2.5 2.5z" />
+    </g>
+  </symbol>
+  <symbol id="text-tool" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M8 6.5c0-.28.22-.5.5-.5H14v16h-2v1h5v-1h-2V6h5.5c.28 0 .5.22.5.5V9h1V6.5c0-.83-.67-1.5-1.5-1.5h-12C7.67 5 7 5.67 7 6.5V9h1V6.5Z" />
+  </symbol>
+  <symbol id="cross" viewBox="0 0 28 28">
+    <g fill="currentColor">
+      <path d="M18 15h8v-1h-8zM14 18v8h1v-8zM14 3v8h1V3zM3 15h8v-1H3z" />
+    </g>
+  </symbol>
+  <symbol id="weak-magnet" viewBox="0 0 28 28">
+    <g fill="currentColor" fill-rule="evenodd">
+      <path fill-rule="nonzero" d="M14 10a2 2 0 0 0-2 2v11H6V12c0-4.416 3.584-8 8-8s8 3.584 8 8v11h-6V12a2 2 0 0 0-2-2zm-3 2a3 3 0 0 1 6 0v10h4V12c0-3.864-3.136-7-7-7s-7 3.136-7 7v10h4V12z" />
+      <path d="M6.5 18h5v1h-5zm10 0h5v1h-5z" />
+    </g>
+  </symbol>
+  <symbol id="strong-magnet" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="nonzero" d="M14 5a7 7 0 0 0-7 7v3h4v-3a3 3 0 1 1 6 0v3h4v-3a7 7 0 0 0-7-7zm7 11h-4v3h4v-3zm-10 0H7v3h4v-3zm-5-4a8 8 0 1 1 16 0v8h-6v-8a2 2 0 1 0-4 0v8H6v-8zm3.293 11.294-1.222-2.037.858-.514 1.777 2.963-2 1 1.223 2.037-.858.514-1.778-2.963 2-1zm9.778-2.551.858.514-1.223 2.037 2 1-1.777 2.963-.858-.514 1.223-2.037-2-1 1.777-2.963z" />
+  </symbol>
+  <symbol id="remove-options" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M18 7h5v1h-2.01l-1.33 14.64a1.5 1.5 0 0 1-1.5 1.36H9.84a1.5 1.5 0 0 1-1.49-1.36L7.01 8H5V7h5V6c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v1Zm-6-2a1 1 0 0 0-1 1v1h6V6a1 1 0 0 0-1-1h-4ZM8.02 8l1.32 14.54a.5.5 0 0 0 .5.46h8.33a.5.5 0 0 0 .5-.46L19.99 8H8.02Z" />
+  </symbol>
+  <symbol id="indicators" viewBox="0 0 28 28">
+    <path stroke="currentColor" d="M6 12 10.8 7.2a1 1 0 0 1 1.4 0l2.7 2.7a1 1 0 0 0 1.3.1L23 5" />
+    <path fill="currentColor" fill-rule="evenodd" d="M19 12a1 1 0 0 0-1 1v4h-3v-1a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v2H7a1 1 0 0 0-1 1v4h17V13a1 1 0 0 0-1-1h-3zm0 10h3v-9h-3v9zm-1 0v-4h-3v4h3zm-4-4.5V22h-3v-6h3v1.5zM10 22v-3H7v3h3z" clip-rule="evenodd" />
+  </symbol>
+  <symbol id="replay" viewBox="0 0 28 28">
+    <path fill="none" stroke="currentColor" d="M13.5 20V9l-6 5.5 6 5.5zM21.5 20V9l-6 5.5 6 5.5z" />
+  </symbol>
+  <symbol id="replay-select-bar" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M10 6H8v16h2V6ZM8 5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H8Zm15 9.5h-6V19l-5-5 5-5v4.5h6v1Zm-9.586-.5L16 11.414v5.172L13.414 14Z" />
+  </symbol>
+  <symbol id="replay-play" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="m10.997 6.93 7.834 6.628a.58.58 0 0 1 0 .88l-7.834 6.627c-.359.303-.897.04-.897-.44V7.37c0-.48.538-.743.897-.44Zm8.53 5.749a1.741 1.741 0 0 1 0 2.637l-7.834 6.628c-1.076.91-2.692.119-2.692-1.319V7.37c0-1.438 1.616-2.23 2.692-1.319l7.834 6.628Z" />
+  </symbol>
+  <symbol id="replay-pause" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M10 7h3v14h-3zM15 7h3v14h-3z" />
+  </symbol>
+  <symbol id="replay-forward" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M20 6v16h1V6h-1Zm-3.908 7.628L9.834 7.996A.5.5 0 0 0 9 8.368v11.264a.5.5 0 0 0 .834.372l6.258-5.632a.5.5 0 0 0 0-.744Zm.67 1.487a1.5 1.5 0 0 0 0-2.23l-6.259-5.632C9.538 6.384 8 7.07 8 8.368v11.264c0 1.299 1.538 1.984 2.503 1.115l6.258-5.632Z" />
+  </symbol>
+  <symbol id="replay-jump" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M18 22V6h1v16h-1ZM8.834 7.996l6.258 5.632a.5.5 0 0 1 0 .744l-6.258 5.632A.5.5 0 0 1 8 19.632V8.368a.5.5 0 0 1 .834-.372Zm6.927 4.89a1.5 1.5 0 0 1 0 2.229l-6.258 5.632C8.538 21.616 7 20.93 7 19.632V8.368C7 7.07 8.538 6.384 9.503 7.253l6.258 5.632ZM21 6v16h1V6h-1Z" />
+  </symbol>
+  <symbol id="replay-chevron-down" viewBox="0 0 16 8">
+    <path fill="currentColor" d="M0 1.475 7.396 7.515l.596.485.593-.49L16 1.39 14.807 0 7.393 6.122 8.58 6.12 1.186.08z" />
+  </symbol>
+  <symbol id="replay-close" viewBox="0 0 17 17">
+    <path fill="currentColor" d="m.58 1.42.82-.82 15 15-.82.82z"></path>
+    <path fill="currentColor" d="m.58 15.58 15-15 .82.82-15 15z"></path>
+  </symbol>
+  <symbol id="undo" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M8.707 13 11.354 15.646l-.707.708L6.792 12.5l3.853-3.854.708.708L8.707 12H14.5a5.5 5.5 0 0 1 5.5 5.5V19h-1v-1.5a4.5 4.5 0 0 0-4.5-4.5H8.707z" />
+  </symbol>
+  <symbol id="redo" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M18.293 13 15.646 15.646l.707.708 3.854-3.854-3.854-3.854-.707.708L18.293 12H12.5A5.5 5.5 0 0 0 7 17.5V19h1v-1.5a4.5 4.5 0 0 1 4.5-4.5h5.793z" />
+  </symbol>
+  <symbol id="add-symbol" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M7 13h7V6h1v7h7v1h-7v7h-1v-7H7v-1z" />
+  </symbol>
+  <symbol id="options-chain" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M8 12h8.17l2.958-5.981.896.443L17.286 12h.052l-.493 1h-.053l-3.322 6.72-.138.28H8v5H7V3h1zm0 7h4.71l2.967-6H8zm15-6h-5.04l.493-1H23z" />
+  </symbol>
+  <symbol id="watchlist" viewBox="0 0 44 44">
+    <path fill="currentColor" d="M28 16H16v1h12v-1ZM28 20H16v1h12v-1ZM16 24h12v1H16v-1Z" />
+    <path fill="currentColor" fill-rule="evenodd" d="m22 30-10 4V12a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v22l-10-4Zm-9 2.52V12h18v20.52l-9-3.6-9 3.6Z" clip-rule="evenodd" />
+  </symbol>
+  <symbol id="alerts" viewBox="0 0 44 44">
+    <path fill="currentColor" d="M35 14.66 29.16 9l-.7.72 5.84 5.66.7-.72ZM9 14.66 14.84 9l.7.72-5.84 5.66-.7-.72ZM22 16v7h-5v1h6v-8h-1Z" />
+    <path fill="currentColor" fill-rule="evenodd" d="M22 33a11 11 0 1 0 0-22 11 11 0 0 0 0 22Zm0-1a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" clip-rule="evenodd" />
+  </symbol>
+  <symbol id="help-center" viewBox="0 0 44 44">
+    <path fill="currentColor" d="M22 8c7.732 0 14 6.268 14 14s-6.268 14-14 14S8 29.732 8 22 14.268 8 22 8m0 1C14.82 9 9 14.82 9 22s5.82 13 13 13 13-5.82 13-13S29.18 9 22 9m.201 18.01A2.016 2.016 0 0 1 24 29l-.01.204A2.017 2.017 0 0 1 22 31l-.201-.01a2.02 2.02 0 0 1-1.788-1.785L20 29c0-1.104.917-2 2-2zM22 28c-.537 0-1 .455-1 1s.462 1 1 1 1-.455 1-1-.462-1-1-1m.31-15C24.9 13 27 15.1 27 17.69a4.31 4.31 0 0 1-2.195 3.754l-.872.492a2.81 2.81 0 0 0-1.433 2.45V25h-1v-.614c0-1.377.743-2.647 1.942-3.322l.872-.49A3.31 3.31 0 0 0 26 17.688 3.69 3.69 0 0 0 22.31 14H22a4 4 0 0 0-4 4h-1a5 5 0 0 1 5-5z" />
+  </symbol>
+  <symbol id="go-to" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M11 4h-1v2H7.5A2.5 2.5 0 0 0 5 8.5V13h1v-2h16v8.5c0 .83-.67 1.5-1.5 1.5H14v1h6.5a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 20.5 6H18V4h-1v2h-6V4Zm6 4V7h-6v1h-1V7H7.5C6.67 7 6 7.67 6 8.5V10h16V8.5c0-.83-.67-1.5-1.5-1.5H18v1h-1Zm-5.15 10.15-3.5-3.5-.7.7L10.29 18H4v1h6.3l-2.65 2.65.7.7 3.5-3.5.36-.35-.36-.35Z" clip-rule="evenodd" />
+  </symbol>
+  <symbol id="path" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M11 10.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4 7a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm11-8.8V13h1V7h-6v1h4.3l-7.42 7.41a2.49 2.49 0 0 0-2.76 0l-3.53-3.53a2.5 2.5 0 1 0-4.17 0L1 18.29l.7.71 6.42-6.41a2.49 2.49 0 0 0 2.76 0l3.53 3.53a2.5 2.5 0 1 0 4.17 0z" />
+  </symbol>
+  <symbol id="show-favorite-toolbar" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="m17.13 9.74 7.37.9-5.44 5.06L20.4 23 14 19.38 7.6 23l1.34-7.3-5.44-5.06 7.37-.9L14 3l3.13 6.74Zm5.11 1.63-4.26 3.97 1.04 5.74L14 18.24l-5.02 2.84 1.04-5.74-4.26-3.97 5.79-.7L14 5.37l2.45 5.3 5.8.7Z" clip-rule="evenodd" />
+  </symbol>
+  <symbol id="settings" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M18 14a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-1 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+    <path fill="currentColor" fill-rule="evenodd" d="M8.5 5h11l5 9-5 9h-11l-5-9 5-9Zm-3.86 9L9.1 6h9.82l4.45 8-4.45 8H9.1l-4.45-8Z"></path>
+  </symbol>
+  <symbol id="indicator-eye" viewBox="0 0 18 18">
+    <path fill="currentColor" fill-rule="evenodd" d="M12 9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-1 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"></path>
+    <path fill="currentColor" d="M16.91 8.8C15.31 4.99 12.18 3 9 3 5.82 3 2.7 4.98 1.08 8.8L1 9l.08.2C2.7 13.02 5.82 15 9 15c3.18 0 6.3-1.97 7.91-5.8L17 9l-.09-.2ZM9 14c-2.69 0-5.42-1.63-6.91-5 1.49-3.37 4.22-5 6.9-5 2.7 0 5.43 1.63 6.92 5-1.5 3.37-4.23 5-6.91 5Z"></path>
+  </symbol>
+  <symbol id="indicator-eye-off" viewBox="0 0 18 18">
+    <path fill="currentColor" d="M3.7 15 15 3.7l-.7-.7L3 14.3l.7.7ZM9 3c1.09 0 2.17.23 3.19.7l-.77.76C10.64 4.16 9.82 4 9 4 6.31 4 3.58 5.63 2.08 9a9.35 9.35 0 0 0 1.93 2.87l-.7.7A10.44 10.44 0 0 1 1.08 9.2L1 9l.08-.2C2.69 4.99 5.82 3 9 3Z"></path>
+    <path fill="currentColor" d="M9 6a3 3 0 0 1 .78.1l-.9.9A2 2 0 0 0 7 8.87l-.9.9A3 3 0 0 1 9 6ZM11.9 8.22l-.9.9A2 2 0 0 1 9.13 11l-.9.9a3 3 0 0 0 3.67-3.68Z"></path>
+    <path fill="currentColor" d="M9 14c-.82 0-1.64-.15-2.43-.45l-.76.76c1.02.46 2.1.7 3.19.7 3.18 0 6.31-1.98 7.92-5.81L17 9l-.08-.2a10.44 10.44 0 0 0-2.23-3.37l-.7.7c.75.76 1.41 1.71 1.93 2.87-1.5 3.37-4.23 5-6.92 5Z"></path>
+  </symbol>
+  <symbol id="indicator-more" viewBox="0 0 18 18">
+    <path fill="currentColor" fill-rule="evenodd" d="M3 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm6-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm7-2a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm1 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"></path>
+  </symbol>
+  <symbol id="candles" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
+    <path fill="currentColor" d="M9 8v12h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M10 4h1v3.5h-1zm0 16.5h1V24h-1z"></path>
+  </symbol>
+  <symbol id="bars-ohlc" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M19 6h-1v7h-3v1h3v8h1v-3h3v-1h-3V6ZM11 7h-1v13H7v1h3v2h1V10h3V9h-3V7Z"></path>
+  </symbol>
+  <symbol id="hollow-candles" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
+    <path fill="currentColor" d="M9 8v11h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M10 4h1v5h-1zm0 14h1v5h-1zM8.5 9H10v1H8.5zM11 9h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11z"></path>
+  </symbol>
+  <symbol id="area" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="m25.35 5.35-9.5 9.5-.35.36-.35-.36-4.65-4.64-8.15 8.14-.7-.7 8.5-8.5.35-.36.35.36 4.65 4.64 9.15-9.14.7.7ZM2 21h1v1H2v-1Zm2-1H3v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1V9h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1H6v1H5v1H4v1Zm1 0v1H4v-1h1Zm1 0H5v-1h1v1Zm1 0v1H6v-1h1Zm0-1H6v-1h1v1Zm1 0H7v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1h1v1Zm1 0v1H8v-1h1Zm0-1H8v-1h1v1Zm1 0H9v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1h1v1Zm1 0v1h-1v-1h1Zm0-1v-1h-1v1h1Zm0 0v1h1v1h1v-1h-1v-1h-1Zm6 2v-1h1v1h-1Zm2 0v1h-1v-1h1Zm0-1h-1v-1h1v1Zm1 0h-1v1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h1v1Zm1 0h-1v1h1v-1Zm0-1h1v1h-1v-1Zm0-1h1v-1h-1v1Zm0 0v1h-1v-1h1Zm-4 3v1h-1v-1h1Z"></path>
+  </symbol>
+  <symbol id="bars-ohlc" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M19 6h-1v7h-3v1h3v8h1v-3h3v-1h-3V6ZM11 7h-1v13H7v1h3v2h1V10h3V9h-3V7Z"></path>
+  </symbol>
+  <symbol id="hollow-candles" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
+    <path fill="currentColor" d="M9 8v11h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M10 4h1v5h-1zm0 14h1v5h-1zM8.5 9H10v1H8.5zM11 9h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11z"></path>
+  </symbol>
+  <symbol id="area" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="m25.35 5.35-9.5 9.5-.35.36-.35-.36-4.65-4.64-8.15 8.14-.7-.7 8.5-8.5.35-.36.35.36 4.65 4.64 9.15-9.14.7.7ZM2 21h1v1H2v-1Zm2-1H3v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1V9h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1H6v1H5v1H4v1Zm1 0v1H4v-1h1Zm1 0H5v-1h1v1Zm1 0v1H6v-1h1Zm0-1H6v-1h1v1Zm1 0H7v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1h1v1Zm1 0v1H8v-1h1Zm0-1H8v-1h1v1Zm1 0H9v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1h1v1Zm1 0v1h-1v-1h1Zm0-1v-1h-1v1h1Zm0 0v1h1v1h1v-1h-1v-1h-1Zm6 2v-1h1v1h-1Zm2 0v1h-1v-1h1Zm0-1h-1v-1h1v1Zm1 0h-1v1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h1v1Zm1 0h-1v1h1v-1Zm0-1h1v1h-1v-1Zm0-1h1v-1h-1v1Zm0 0v1h-1v-1h1Zm-4 3v1h-1v-1h1Z"></path>
+  </symbol>
+  <symbol id="bars-ohlc" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M19 6h-1v7h-3v1h3v8h1v-3h3v-1h-3V6ZM11 7h-1v13H7v1h3v2h1V10h3V9h-3V7Z"></path>
+  </symbol>
+  <symbol id="hollow-candles" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
+    <path fill="currentColor" d="M9 8v11h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M10 4h1v5h-1zm0 14h1v5h-1zM8.5 9H10v1H8.5zM11 9h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11z"></path>
+  </symbol>
+  <symbol id="area" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="m25.35 5.35-9.5 9.5-.35.36-.35-.36-4.65-4.64-8.15 8.14-.7-.7 8.5-8.5.35-.36.35.36 4.65 4.64 9.15-9.14.7.7ZM2 21h1v1H2v-1Zm2-1H3v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1V9h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1H6v1H5v1H4v1Zm1 0v1H4v-1h1Zm1 0H5v-1h1v1Zm1 0v1H6v-1h1Zm0-1H6v-1h1v1Zm1 0H7v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1h1v1Zm1 0v1H8v-1h1Zm0-1H8v-1h1v1Zm1 0H9v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1h1v1Zm1 0v1h-1v-1h1Zm0-1v-1h-1v1h1Zm0 0v1h1v1h1v-1h-1v-1h-1Zm6 2v-1h1v1h-1Zm2 0v1h-1v-1h1Zm0-1h-1v-1h1v1Zm1 0h-1v1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h1v1Zm1 0h-1v1h1v-1Zm0-1h1v1h-1v-1Zm0-1h1v-1h-1v1Zm0 0v1h-1v-1h1Zm-4 3v1h-1v-1h1Z"></path>
+  </symbol>
+  <symbol id="bars-ohlc" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M19 6h-1v7h-3v1h3v8h1v-3h3v-1h-3V6ZM11 7h-1v13H7v1h3v2h1V10h3V9h-3V7Z"></path>
+  </symbol>
+  <symbol id="hollow-candles" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
+    <path fill="currentColor" d="M9 8v11h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-12a.5.5 0 0 1 .5-.5z"></path>
+    <path fill="currentColor" d="M10 4h1v5h-1zm0 14h1v5h-1zM8.5 9H10v1H8.5zM11 9h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11zm-1 1h1v1h-1zm-1.5 1H10v1H8.5zm2.5 0h1.5v1H11z"></path>
+  </symbol>
+  <symbol id="area" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="m25.35 5.35-9.5 9.5-.35.36-.35-.36-4.65-4.64-8.15 8.14-.7-.7 8.5-8.5.35-.36.35.36 4.65 4.64 9.15-9.14.7.7ZM2 21h1v1H2v-1Zm2-1H3v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1V9h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1H6v1H5v1H4v1Zm1 0v1H4v-1h1Zm1 0H5v-1h1v1Zm1 0v1H6v-1h1Zm0-1H6v-1h1v1Zm1 0H7v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v1h1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1H8v1H7v1h1v1Zm1 0v1H8v-1h1Zm0-1H8v-1h1v1Zm1 0H9v1h1v1h1v-1h1v1h1v-1h1v1h1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v1H9v1h1v1Zm1 0v1h-1v-1h1Zm0-1v-1h-1v1h1Zm0 0v1h1v1h1v-1h-1v-1h-1Zm6 2v-1h1v1h-1Zm2 0v1h-1v-1h1Zm0-1h-1v-1h1v1Zm1 0h-1v1h1v1h1v-1h1v1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v-1h1v-1h-1v1h-1v1h-1v1h-1v1h1v1Zm1 0h-1v1h1v-1Zm0-1h1v1h-1v-1Zm0-1h1v-1h-1v1Zm0 0v1h-1v-1h1Zm-4 3v1h-1v-1h1Z"></path>
+  </symbol>
+  <symbol id="layout1" viewBox="-1 -1 21 19">
+    <path fill="currentColor" d="M2.5 1C1.67 1 1 1.67 1 2.5v12c0 .83.67 1.5 1.5 1.5h14c.83 0 1.5-.67 1.5-1.5v-12c0-.83-.67-1.5-1.5-1.5h-14ZM0 2.5A2.5 2.5 0 0 1 2.5 0h14A2.5 2.5 0 0 1 19 2.5v12a2.5 2.5 0 0 1-2.5 2.5h-14A2.5 2.5 0 0 1 0 14.5v-12Z"></path>
+  </symbol>
+  <symbol id="symbol" viewBox="0 0 28 28">
+    <path fill="currentColor" d="M12 7h-.75V4h-1.5v3H9a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h.75v3h1.5v-3H12a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1ZM9.5 19.5v-11h2v11h-2Zm8-3v-5h2v5h-2Zm.24-6.5H17a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.75v3h1.5v-3H20a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1h-.76V7h-1.5v3Z"></path>
+  </symbol>
+  <symbol id="status" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="evenodd" d="M7 7.5h14a.5.5 0 0 1 0 1H7a.5.5 0 0 1 0-1ZM5 8c0-1.1.9-2 2-2h14a2 2 0 1 1 0 4H7a2 2 0 0 1-2-2Zm13 5H6v1.5h12V13ZM6 17h12v1.5H6V17Zm12 4H6v1.5h12V21Z"></path>
+  </symbol>
+  <symbol id="scales" viewBox="0 0 28 28">
+    <path stroke="currentColor" fill="none" d="M10.5 20.5a2 2 0 1 1-2-2m2 2a2 2 0 0 0-2-2m2 2h14m-16-2v-14m16 16L21 17m3.5 3.5L21 24M8.5 4.5L12 8M8.5 4.5L5 8"></path>
+  </symbol>
+  <symbol id="canvas" viewBox="0 0 28 28">
+    <path stroke="currentColor" fill="none" stroke-width="1.5" d="m7.5 16.5-1 1v4h4l1-1m-4-4 9-9m-9 9 4 4m0 0 9-9m-4-4 .59-.59a2 2 0 0 1 2.82 0L21.1 8.1a2 2 0 0 1 0 2.82l-.59.59m-4-4 2 2 2 2"></path>
+  </symbol>
+  <symbol id="klinechart-logo" viewBox="0 0 398 72">
+    <path fill="currentColor" d="M114.406 17.072v18.47L128.14 17.072h11.868l-13.91 18.097 15.058 20.179h-11.261l-10.05-14.028-5.439 5.779v8.249H106V17.087h8.406v-.015Z"></path>
+    <path fill="currentColor" d="M154.842 47.146h12.474v8.186h-20.88V17.072h8.406v30.074Z"></path>
+    <path fill="currentColor" d="M182.15 21.033c0 2.454-2.025 4.443-4.562 4.443-2.536 0-4.61-1.973-4.61-4.443s2.09-4.49 4.61-4.49 4.562 2.035 4.562 4.49Zm-1.643 5.515h1.148v28.784h-8.294V26.548h7.146Z"></path>
+    <path fill="currentColor" d="M214.531 40.777v14.555h-8.135V40.777c0-3.526-1.93-7.115-6.157-7.115-4.068 0-7.306 3.216-7.306 7.115v14.555h-8.135V26.268h8.135v1.29c2.138-1.119 4.674-1.818 7.306-1.818 8.247 0 14.292 6.322 14.292 15.037Z"></path>
+    <path fill="currentColor" d="M249.91 45.173c-3.35 7.44-10.336 12.256-18.678 10.438-7.481-1.6-13.032-8.668-12.25-16.481 1.818-18.734 28.584-17.989 30.498.48-6.811 2.035-13.734 3.915-20.673 5.888 3.956 4.552 10.99 2.734 13.351-2.408l7.752 2.083Zm-22.906-5.468 13.24-3.806c-2.361-6.136-14.564-2.61-13.24 3.806Z"></path>
+    <path fill="currentColor" d="m283.711 40.621 6.093 5.934-3.079 2.998c-3.796 3.744-8.852 5.825-14.292 5.779-11.102 0-20.162-8.823-20.162-19.635C252.271 24.839 261.331 16 272.433 16c5.392 0 10.56 2.082 14.292 5.779l3.079 2.936-6.093 5.934-3.079-2.936c-2.201-2.19-5.104-3.262-8.183-3.324-6.317 0-11.549 5.08-11.549 11.293 0 6.151 5.216 11.246 11.549 11.246 3.126 0 5.998-1.18 8.183-3.324l3.079-2.982Z"></path>
+    <path fill="currentColor" d="M324.753 40.777v14.555h-8.135V40.777c0-3.526-1.93-7.115-6.157-7.115-4.068 0-7.306 3.216-7.306 7.115v14.555h-8.135V16.683l8.135.327v10.547c2.137-1.118 4.674-1.817 7.306-1.817 8.247 0 14.292 6.322 14.292 15.037Z"></path>
+    <path fill="currentColor" d="M350.482 26.33h8.071v29.22h-8.071v-1.398c-2.201 1.181-4.674 1.818-7.306 1.818-8.518 0-15.441-6.742-15.441-15.037 0-8.249 6.923-14.991 15.441-14.991 2.632 0 5.105.637 7.306 1.771V26.33Zm0 14.618c0-3.899-3.302-7.115-7.306-7.115-4.068 0-7.306 3.216-7.306 7.115 0 3.961 3.238 7.115 7.306 7.115 4.004 0 7.306-3.154 7.306-7.115Z"></path>
+    <path fill="currentColor" d="M377.519 25.957h1.148v7.55h-1.595c-5.663.062-6.269 5.561-6.269 7.922v13.903h-8.294V26.33h8.294v1.383c1.866-1.165 4.131-1.756 6.716-1.756Z"></path>
+    <path fill="currentColor" d="M396.852 23.223H398v7.488h-4.45v16.994c0 .746 1.26.855 1.818.855.495 0 .83-.047 1.1-.109l1.532-.528v7.177l-.766.326c-1.037.373-2.201.59-3.525.59-4.897 0-8.47-3.48-8.47-8.295V30.742h-3.222v-7.488h3.238v-6.198h8.294v6.198h3.302v-.031Z"></path>
+    <rect x="33.252" y="21.003" width="6" height="29.995" fill="currentColor"></rect>
+    <path fill="currentColor" d="M52.31 5.212V3.909A35.825 35.825 0 0 0 36 0C16.116 0 0 16.113 0 35.994c0 11.675 5.561 22.034 14.168 28.614v-8.05C9.11 51.191 6 43.953 6 35.994 6 19.429 19.432 6 36 6c3.626 0 7.097.644 10.31 1.831v24.383h6V5.212Z"></path>
+    <path fill="currentColor" d="M58.31 7.753v8.192C63.097 21.261 66 28.292 66 35.994c0 16.565-13.432 29.994-30 29.994-3.445 0-6.748-.58-9.832-1.651V39.696h-6V68.336A35.922 35.922 0 0 0 36 72c19.884 0 36-16.113 36-35.994.013-11.469-5.342-21.66-13.69-28.253Z"></path>
+  </symbol>
+  <symbol id="strategies" viewBox="0 0 18 18">
+    <path fill="currentColor" d="M7 1H6v2H4l2.5 3L9 3H7V1ZM11 17v-2H9l2.5-3 2.5 3h-2v2h-1ZM12.3 10.15l2.7-2.4-.67-.75-2.69 2.4a1 1 0 0 1-1.3.04L8.29 7.78a2 2 0 0 0-2.58.07L3 10.25l.67.75 2.7-2.4a1 1 0 0 1 1.29-.04l2.06 1.66a2 2 0 0 0 2.59-.07Z"></path>
+  </symbol>
+  <symbol id="search" viewBox="0 0 28 28">
+    <path fill-rule="evenodd" d="M17.44 18.14a7.5 7.5 0 1 1 .7-.7L23 22.29l-.71.7zM19 12.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"></path>
+  </symbol>
+  <symbol id="refresh" viewBox="0 0 28 28">
+    <path fill="currentColor" fill-rule="nonzero" d="M14 5V2L10 6l4 4V7c3.86 0 7 3.14 7 7s-3.14 7-7 7-7-3.14-7-7H5c0 4.97 4.03 9 9 9s9-4.03 9-9-4.03-9-9-9z"/>
+  </symbol>
+</svg>
