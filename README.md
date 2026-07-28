@@ -2,6 +2,31 @@
 ---
 # Changelog
 
+## 2026-07-28
+
+### YSTC Script Editor & Developer SDK (@ystc/sdk)
+- **Monaco Editor Integration**: Installed `monaco-editor` (`^0.56.0`) in [package.json](package.json). Built embedded code editor manager ([monacoManager.ts](src/scripting/monacoManager.ts)) with inline TypeScript autocompletion, type diagnostics, parameter hints, and hover tooltips.
+- **Monaco Advanced Features & Keyboard Shortcuts**: Registered custom `ystc-light` theme, keyboard shortcuts (`Ctrl+Enter` to Add to Chart, `Ctrl+S` to Save, `Ctrl+Shift+H` for SDK Help), custom `@ystc/sdk` autocomplete snippets (`indicator`, `strategy`, `overlay`, `sma`, `ema`, `rsi`), and runtime error model markers in [monacoManager.ts](src/scripting/monacoManager.ts) and [ScriptEditorPanel.ts](src/ui/ScriptEditorPanel.ts).
+- **YSTC Developer SDK**: Authored typed SDK interfaces ([ystc-sdk.d.ts](src/scripting/sdk/ystc-sdk.d.ts), [ystc-sdk-raw.ts](src/scripting/sdk/ystc-sdk-raw.ts), [sdk.ts](src/scripting/sdk/sdk.ts)) supporting 3 core script types (`indicator`, `overlay`, `strategy`) with clean default export syntax (`import { indicator } from "@ystc/sdk"`). Included built-in math functions (`sma`, `ema`, `rsi`, `macd`, `stdDev`, `highest`, `lowest`).
+- **Script Runtime Engine**: Built browser transpilation, sandboxing, loading, unloading, and registration pipeline ([ScriptRuntime.ts](src/scripting/runtime/ScriptRuntime.ts), [KlineChartsBridge.ts](src/scripting/runtime/KlineChartsBridge.ts), [StrategyExecutor.ts](src/scripting/runtime/StrategyExecutor.ts)) for dynamic indicators, overlays, and automated strategies.
+- **Local Persistence & Export**: Created local script store ([scriptStore.ts](src/scripting/scriptStore.ts)) with `localStorage` sync, starter template generation ([templates.ts](src/scripting/templates.ts)), and local TypeScript `.ts` file export.
+- **SDK Documentation & Modals**: Built interactive SDK documentation modal ([SDKHelpModal.ts](src/ui/SDKHelpModal.ts)) synchronized with Monaco keyboard shortcuts (`Ctrl+Enter`, `Ctrl+S`, `Ctrl+Shift+H`) and Tab snippets, along with template selection dialogs and Monaco compiler options dialogs ([ScriptEditorModals.ts](src/ui/ScriptEditorModals.ts)).
+
+### Bottom Dock Workspace & Layout Integration
+- **Docked Bottom Tab Bar**: Integrated [ScriptEditorPanel.ts](src/ui/ScriptEditorPanel.ts) directly into the bottom drawer container alongside [AccountManager.ts](src/ui/AccountManager.ts).
+- **Tab Header Navigation**: Added `[ Account Manager ]` | `[ Script Editor ]` tab buttons to the bottom dock header, eliminating floating popups over the chart canvas.
+- **Smart 1st-Click Switch & 2nd-Click Toggle Rules**: Updated tab click behavior in [AccountManager.ts](src/ui/AccountManager.ts). Clicking an inactive tab switches tab and opens/expands the dock; clicking an active tab toggles (expands/minimizes) the dock drawer.
+- **TopBar Toolbar Streamlining**: Cleaned up [TopBar.ts](src/ui/TopBar.ts) by removing redundant top bar buttons to preserve chart space.
+
+### Custom Indicators, Overlays & Strategy Execution
+- **Custom Indicator Legend Sync & Toolbar Controls**: Wired `indicator:custom:registered` event in [ChartManager.ts](src/chart/ChartManager.ts) to trigger `syncIndicatorLegend()`. Custom indicators placed on chart automatically display pane action buttons (Show/Hide 👁️, Settings ⚙️, Delete 🗑️).
+- **Custom Indicator Settings Backdrop Fallback**: Implemented fallback catalog resolution in [catalog.ts](src/indicators/catalog.ts) and [IndicatorSettingsModal.ts](src/ui/IndicatorSettingsModal.ts) for custom user indicators (`USER_*`), preventing unrendered modal backdrops from locking screen clicks.
+- **Strategy Add-to-Chart & Signal Annotations**: Connected active chart candle data (`KLineData[]`) to [ScriptEditorPanel.ts](src/ui/ScriptEditorPanel.ts) and [StrategyExecutor.ts](src/scripting/runtime/StrategyExecutor.ts). Executing a strategy evaluates trade signals across candles, dispatches orders to Paper or Live OpenAlgo broker, and renders `BUY` / `SELL` annotation badges on chart candles in [ChartManager.ts](src/chart/ChartManager.ts).
+- **Anchored VWAP & Gann Box Overlay Tools**: Created custom drawing overlays ([anchoredVwap.ts](src/overlays/anchoredVwap.ts), [gannBox.ts](src/overlays/gannBox.ts)) registered in [index.ts](src/overlays/index.ts). Added `anchored-vwap` SVG symbol to [icons.svg](public/icons.svg) and placed Anchored VWAP right after Volume Cluster and Gann Box right after Date & Price Range in [ToolBar.ts](src/ui/ToolBar.ts).
+- **TradingView-Style Anchored VWAP Settings Modal**: Built interactive settings dialog ([AnchoredVwapModal.ts](src/ui/AnchoredVwapModal.ts), [anchoredVwapSettings.ts](src/overlays/anchoredVwapSettings.ts)) with Inputs, Style, and Visibility tabs matching TradingView. Supports Bands Calculation Mode (Standard Deviation / Percentage), Band Multipliers #1, #2, #3, custom source price options (High, Low, Close, Open, hl2, hlc3, ohlc4), per-band line color & fill toggles, and live chart overlay synchronization in [ChartManager.ts](src/chart/ChartManager.ts).
+- **Circle Drawing Overlay Tool**: Implemented custom 2-step Circle drawing overlay ([circle.ts](src/overlays/circle.ts)) registered in [index.ts](src/overlays/index.ts) with center point anchor, dynamic pixel radius calculation, stroke border, and background polygon fill (`rgba(41, 98, 255, 0.12)`).
+- **Indicator Modal UI Padding Fix**: Increased bottom padding in `.indicator-modal__list` in [style.css](src/style.css) from `8px` to `18px`, preventing bottom search items (e.g. SAR) from flush truncation against card corners.
+
 ## 2026-07-24
 
 ### Dynamic Market Depth & 50D/20D DOM Engine
