@@ -2,6 +2,20 @@
 ---
 # Changelog
 
+## 2026-07-29
+
+### Paper Trading Itemized Charges Breakdown & UI Enhancements
+- **Fyers-Styled Itemized Charges Breakdown Popover**: Authored standalone UI component [ChargesPopover.ts](src/ui/ChargesPopover.ts) rendering detailed itemized tax popups (Brokerage, Exchange/Clearing fee, CTT/STT, GST 18%, SEBI fees, Stamp Duty, and NSE IPFT). Integrated clickable `Price breakup` link in [OrderPanel.ts](src/ui/OrderPanel.ts) and interactive `charges` cell popovers in [AccountManager.ts](src/ui/AccountManager.ts).
+- **Product Column in Account Manager Tables**: Added explicit `product` column (`CNC` | `MIS` | `NRML`) to Orders and Trades tables in [AccountManager.ts](src/ui/AccountManager.ts) to instantly differentiate Delivery, Intraday, and F&O carryforward trades.
+- **Shoonya Finvasia Brokerage Charge Template**: Added `'shoonya'` template preset (`Flat ₹5 / 0.03% / Delivery ₹0`) to [types.ts](src/paper/types.ts), [marginHelper.ts](src/utils/marginHelper.ts), and [AccountManager.ts](src/ui/AccountManager.ts). Implemented Shoonya's zero brokerage rules for Equity Delivery (`CNC`), capped ₹5 / 0.03% for Intraday (`MIS`) & Futures, flat ₹5 for Options, and exact NSE exchange charges (0.03503% options premium / 0.0030699% equity) with zero clearing member markup.
+- **Paper Account Reset Event Alignment**: Added event alias listeners (`paper-account:reset` and `paper-account:reset-funds`) in [PaperBroker.ts](src/paper/PaperBroker.ts) and updated [AccountManager.ts](src/ui/AccountManager.ts). Resetting account funds now explicitly clears orders, trades, positions, holdings, and used margin in `PaperStore`, and emits `paper-account:send-summary` and `order:filled` to trigger immediate UI re-rendering of all dock tabs (Positions, Orders, Holdings, Trades).
+- **Strategy Execution Dynamic Symbol Resolution**: Updated [StrategyExecutor.ts](src/scripting/runtime/StrategyExecutor.ts) to resolve active chart symbol (`openchart_last_selection`, e.g. `SBIN-EQ`) dynamically instead of hardcoding `STRATEGY_TEST`.
+
+### OpenAlgo WebSocket & Order Panel Depth Fixes
+- **WebSocket Subscription RefCount Leak Fix**: Added `updateDepth()` method to [wsClient.ts](src/openalgo/wsClient.ts) and updated `resubscribeDepth()` in [OrderPanel.ts](src/ui/OrderPanel.ts). Reconfiguring market depth settings via DOM pills (`Auto`, `5D`, `20D`, `50D`) now updates target depth and sends WebSocket frames to OpenAlgo without redundantly incrementing subscription `refCount`.
+
+- **Targeted Monaco TypeScript & JavaScript Language Registration**: Updated [monacoManager.ts](src/scripting/monacoManager.ts) to register targeted TypeScript (`definitions/typescript/register.js`) and JavaScript (`definitions/javascript/register.js`) language modules alongside `editor.api.js`. Completely eliminated 68+ unused language chunks (abap, clojure, solidity, pascal, etc.), dropping total build asset file count from 107 files down to 25 files (82 files eliminated) and total `dist/assets` size down to 15.38 MB (saving 5.12 MB over baseline) while preserving 100% full IDE capabilities (token colorization, parameter hints, IntelliSense tooltips, diagnostic markers).
+
 ## 2026-07-28
 
 ### YSTC Script Editor & Developer SDK (@ystc/sdk)
