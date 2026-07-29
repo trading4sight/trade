@@ -1,4 +1,4 @@
-# YSTC CHARTS - TradingView Charting platform Alternative
+# YSTC CHARTS - Trading Chart platform Alternative to TradingView
 ---
 # Changelog
 
@@ -14,7 +14,7 @@
 ### OpenAlgo WebSocket & Order Panel Depth Fixes
 - **WebSocket Subscription RefCount Leak Fix**: Added `updateDepth()` method to [wsClient.ts](src/openalgo/wsClient.ts) and updated `resubscribeDepth()` in [OrderPanel.ts](src/ui/OrderPanel.ts). Reconfiguring market depth settings via DOM pills (`Auto`, `5D`, `20D`, `50D`) now updates target depth and sends WebSocket frames to OpenAlgo without redundantly incrementing subscription `refCount`.
 
-- **Targeted Monaco TypeScript & JavaScript Language Registration**: Updated [monacoManager.ts](src/scripting/monacoManager.ts) to register targeted TypeScript (`definitions/typescript/register.js`) and JavaScript (`definitions/javascript/register.js`) language modules alongside `editor.api.js`. Completely eliminated 68+ unused language chunks (abap, clojure, solidity, pascal, etc.), dropping total build asset file count from 107 files down to 25 files (82 files eliminated) and total `dist/assets` size down to 15.38 MB (saving 5.12 MB over baseline) while preserving 100% full IDE capabilities (token colorization, parameter hints, IntelliSense tooltips, diagnostic markers).
+- **Targeted Monaco TypeScript & JavaScript Language Registration & Rollup Sanitization**: Updated [monacoManager.ts](src/scripting/monacoManager.ts) to register targeted TypeScript (`definitions/typescript/register.js`) and JavaScript (`definitions/javascript/register.js`) language modules alongside `editor.api.js`. Added `sanitizeFileName` and `chunkFileNames` to [vite.config.mjs](vite.config.mjs) to strip leading underscores (`^_+`) from generated chunks (`contribution-*.js`), fixing production web server (`trade.ystc.in`) 404 errors while eliminating 68+ unused language chunks (dropping asset count from 107 to 25 files, saving 5.10 MB, total dist size 15.40 MB).
 
 ## 2026-07-28
 
