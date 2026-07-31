@@ -2,6 +2,27 @@
 ---
 # Changelog
 
+## 2026-07-31
+
+### P&L-Aware Position Exit & Bracket Order Status Notifications (git: 1469106)
+- **P&L-Aware Position Exit Badges**: Added real-time status notifications in [PaperBroker.ts](src/paper/PaperBroker.ts) dynamically colored by realized trade P&L upon position close/reduction (🟢 Green Profit `+₹P&L`, 🔴 Red Loss `-₹P&L`, 🔵 Blue Breakeven `₹0.00`).
+- **TP/SL Bracket Order Notifications**: Added real-time status notifications for Take Profit placement (🔵 Blue), Stop Loss placement (🟠 Orange), order modifications (🔵 Blue), and order cancellations (🔵 Blue).
+
+### Notification Layout & System-Wide EventBus Centralization (git: 0435912, 9ba462b)
+- **Notification Pill Margin & Flex Sizing Fix**: Adjusted `headerStatusEl` CSS in [AccountManager.ts](src/ui/AccountManager.ts) to `flex: 0 1 auto; width: max-content; max-width: 100%; margin-right: 12px;`. Prevents notification pill badges from stretching across empty header space and touching or overlapping the right-docked `Live`/`Paper` account controls.
+- **High-Contrast 4-Tier Pill Badges**: Upgraded `showHeaderStatus()` in [AccountManager.ts](src/ui/AccountManager.ts) to render high-contrast, soft-tinted pill badges with semantic icons (`✓`, `⚠️`, `⚡`, `ℹ️`) and `13px 600 weight` typography across 4 notification tiers (`success` green, `error` red, `warning` amber, `info` blue) with smart severity timeouts (6s for error, 4s for warning/success, 3s for info).
+- **Dual Notification & Centralization**: Updated `setStatus()` in [OrderPanel.ts](src/ui/OrderPanel.ts) and [OptionChainModal.ts](src/ui/OptionChainModal.ts) to preserve local status boxes while emitting `trading:status:notify` simultaneously. 100% of order input validation checks, quantity warnings, limit/trigger tick size checks, broker failure messages, and cancel notices stream directly to the central bottom dock Status Notification.
+
+### Paper Trading Order Store Correction & Zero-LTP Quote Guard (git: e5f19e7)
+- **Rejected Order Routing Correction**: Updated [PaperBroker.ts](src/paper/PaperBroker.ts) to push all rejected orders (`REJECTED`) to `this.state.orders` instead of `this.state.trades`. Emits `orders:update` so rejected orders appear cleanly in the **Orders** tab (Order Book) with their red rejection reason badge, leaving the **Trades** tab strictly reserved for completed fills (`FILLED`).
+- **Zero-LTP Quote Execution Guard**: Removed dummy fallback price `1000.00` from [PaperBroker.ts](src/paper/PaperBroker.ts) and added zero-LTP guards in [OrderPanel.ts](src/ui/OrderPanel.ts). If an order is placed when `ltp === 0` (e.g. immediately after switching symbols before WebSocket ticks arrive), order placement is blocked/rejected with notification: *"No price quote available for [SYMBOL] yet. Please wait a moment for market data to stream."*
+
+### Non-Tradable Index Trading Restrictions & Dock Header Redesign (git: 938e254, 09b8c22, 8506d72)
+- **Bottom Dock Header 2-Group Layout Redesign**: Restructured `oa-account-dock-header` in [AccountManager.ts](src/ui/AccountManager.ts) into two clean flex groups (`headerLeft` and `headerRight`). Status notification text now starts immediately after the dock tabs on the left with flexible width (`flex: 1`, removing 300px max-width cap), while account badges (`Live/Paper`), timestamp, action buttons, and dock toggle button (`^`/`−`) are docked to the far right edge (`margin-left: auto`).
+- **Lightweight Rule-Based Index Guard**: Implemented `isIndexSymbol()` helper in [marginHelper.ts](src/utils/marginHelper.ts) to detect non-tradable indices (`NSE_INDEX`, `BSE_INDEX`, `GLOBAL_INDEX`, `-INDEX` suffixes, and index base names like `NIFTY`, `BANKNIFTY`, `FINNIFTY`, `MIDCPNIFTY`, `SENSEX`).
+- **Paper Trading Order Rejection**: Updated [PaperBroker.ts](src/paper/PaperBroker.ts) `placeOrder()` to reject order placement on index symbols with error message: *"Indices are non-tradable! You can try trading in Futures or Options of this Index instead."*
+- **Removal of Native Browser Alert Popups**: Purged all blocking browser `alert()` popups across [OrderPanel.ts](src/ui/OrderPanel.ts), [TopBar.ts](src/ui/TopBar.ts), and [PaperBroker.ts](src/paper/PaperBroker.ts). Replaced with non-intrusive, real-time in-app trading status notifications (`trading:status:notify`) and inline status text so trading workflow is never interrupted.
+
 ## 2026-07-29
 
 ### Paper Trading Itemized Charges Breakdown & UI Enhancements
