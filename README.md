@@ -2,6 +2,61 @@
 ---
 # Changelog
 
+## 2026-08-03
+
+### Fyers-Style Timezone Selector & Live Clock
+- **Full Fyers Timezone Master List**: Expanded `CHART_TIMEZONES` in [chartSettings.ts](src/chart/chartSettings.ts) with the full 94-item standard timezones matching Fyers / TradingView inspect structure (e.g. `(UTC+5:30) Kolkata`, `Exchange`, `UTC`, `(UTC-4) New York`, `(UTC+1) London`, `(UTC+9) Tokyo`, etc.). Added `resolveIanaTimezone()` to ensure 100% safe, non-breaking IANA timezone formatting for KlineCharts without runtime `Intl.DateTimeFormat` exceptions.
+- **Live Footer Clock & Interactive Timezone Popup**: Replaced static dummy string in [ChartFooter.ts](src/ui/ChartFooter.ts) with a live 1-second ticking clock button (`HH:mm:ss UTC+5:30`). Styled with high-contrast `12px font-weight: 600` primary text on a prominent pill badge (`var(--bg-secondary)`), and upgraded left range buttons (`1D 5D 1M 3M 6M YTD 1Y 5Y All` + `goto` calendar picker button with crisp 18px icon centering) to primary text (`var(--text-primary)`) matching Fyers chart footer metrics. Clicking opens an interactive, scrollable Fyers-style timezone menu (`chart-tz-menu-popup`) with active checkmark indicators (`✓`) and instant eventBus synchronization with KlineCharts and Main Settings.
+
+### Dynamic Symbol Lot Size Registry (No Hardcoded Symbols)
+- **Zero-Hardcoding Symbol Lot Registry**: Replaced fallback hardcoded symbol string checks (`GOLD`, `CRUDEOIL`, `NIFTY`, etc.) in [marginHelper.ts](src/utils/marginHelper.ts) with `symbolLotSizeRegistry` and `registerSymbolLotSize()`. [OrderPanel.ts](src/ui/OrderPanel.ts) automatically populates the registry upon fetching symbol metadata from OpenAlgo REST API, ensuring exact lot sizes for all contracts (including Mini contracts like `GOLDM`, `SILVERM`, `SILVERMIC`) are resolved dynamically without hardcoding.
+
+### Lot Count UI Display in Order Panel & Account Manager
+- **Dynamic Order Panel Lot Header**: Updated `syncQuantityUiMeta()` in [OrderPanel.ts](src/ui/OrderPanel.ts) to dynamically display lot count badges (e.g. `Quantity (1 Lot)`, `Quantity (2 Lots)`) alongside unit quantity whenever `lotSize > 1`.
+- **Lot Formatting in Account Manager Tables**: Added `formatQuantityWithLots()` in [marginHelper.ts](src/utils/marginHelper.ts) and connected to [AccountManager.ts](src/ui/AccountManager.ts). Trades, Orders, Positions, and Holdings tables format F&O and Commodity quantities as `100 (1 Lot)` or `200 (2 Lots)`.
+
+### MCX & F&O Freeze Limit Lot/Unit Scaling Fix
+- **Scaled Freeze Limit by Lot Size**: Updated `refreshLotSize()` and order validation in [OrderPanel.ts](src/ui/OrderPanel.ts) to scale `freezeQty` by `lotSize` when OpenAlgo / broker metadata returns `freeze_qty` in lots (`freeze_qty < lotSize`). Allows ordering 1 lot of MCX commodities (e.g. 100 units for `CRUDEOIL`) without triggering false client-side freeze limit rejections, while correctly capping multi-lot orders above the exchange freeze limit.
+
+### KlineCharts Version Upgrade
+- **Upgraded KlineCharts to ^10.0.1**: Upgraded `klinecharts` dependency in [package.json](package.json) from `^10.0.0` to `^10.0.1` and updated `package-lock.json`. Incorporates mobile gesture fixes, area animation lifecycle improvements, canvas DPR scaling enhancements, color parser fixes, and TypeScript `.d.ts` declaration fixes.
+
+### OpenAlgo End Date Parameter Fix & In-Flight Request Deduplication
+- **Exact Current IST Date for OpenAlgo History Requests**: Updated `endDateObj` calculation in [onlineLoader.ts](src/chart/onlineLoader.ts) to use `new Date()` (exact current date) instead of adding +24 hours, eliminating OpenAlgo server warnings (`Warning: End date is in the future. Adjusting to current date`).
+- **In-Flight Request Deduplication on WS Authenticated**: Added `isOnlineLoadPending()` and `hasOnlineCache()` checks to `ws:authenticated` listener in [ChartManager.ts](src/chart/ChartManager.ts) to avoid purging online cache and firing duplicate HTTP POST history requests when a fetch is already in flight.
+
+### Microtask WebSocket Command Batching & AGENTS.md Architecture Protection
+- **Microtask WebSocket Array Batching**: Implemented microtask (`queueMicrotask`) array command batching in [wsClient.ts](src/openalgo/wsClient.ts) for OpenAlgo WebSocket subscriptions and unsubscriptions. Rapid individual `subscribe()` / `unsubscribe()` calls during tab switches or symbol selections are automatically combined into single JSON array payloads (`{ action: 'subscribe', symbols: [...] }`), eliminating socket queue backpressure, payload fragmentation, and Fyers API v3 rate-limiting dropouts.
+- **Enterprise Enhancements Protection Rule**: Added protective guidelines to [AGENTS.md](AGENTS.md) safeguarding client-side enterprise enhancements (microtask WebSocket batching, active symbol watchdog protection, local session candle persistence, and SEBI 2026 CAS segment scoping) from accidental deletion or reversion. Added mandatory implementation plan prerequisite rule.
+
+
+### WebSocket Watchdog Active Symbol Protection
+- **Protected Active Chart & Position Symbols**: Updated `startWatchdog()` in [wsClient.ts](src/openalgo/wsClient.ts) to prevent the watchdog from purging subscriptions for the active chart symbol (`getActiveChartSymbol()`) or open Account Manager positions/holdings (`this.activePositionSymbols`). If an illiquid option contract (e.g. `SBIN25AUG261040PE.NFO`) or quiet symbol has no trade ticks for 45 seconds, the watchdog now maintains a keep-alive re-subscribe loop without deleting the subscription key, ensuring live feeds for open charts and positions never get cut off.
+
+### SEBI 2026 Closing Auction Session (CAS), Pre-Open & F&O Product Rules
+- **CAS & F&O Market Hours**: Updated `getMarketStatus()` and `MarketStatus` interface in [marketHours.ts](src/utils/marketHours.ts) to model the SEBI 2026 Closing Auction Session (`03:15 PM – 03:35 PM IST`) for Equity Cash (`NSE`/`BSE`), while keeping Derivatives (`NFO`/`BFO`) continuous trading active until **`03:40 PM IST`**.
+- **F&O NRML vs MIS & Pre-Open / CAS Order Validation**: Enforced 100% circular compliance across order placement, modification (`modifyOrder`), and cancellation (`cancelOrder`) in [PaperBroker.ts](src/paper/PaperBroker.ts):
+  - **Pre-Open Auction Window (`09:00 AM – 09:15 AM IST`)**: Rejects Stop-Loss (`STOP`, `STOP_LIMIT`) orders (`09:00 – 09:10 AM`); rejects Market orders placed, modified, or cancelled after `09:05 AM` (`09:05 – 09:10 AM`); blocks all order actions during Pre-Open matching & transition (`09:10 – 09:15 AM`).
+  - **CAS Transition Window (`03:15 PM – 03:20 PM IST`)**: Rejects all order placement, modification, and cancellation for Equity Cash during transition.
+  - **CAS Order Entry & Matching (`03:20 PM – 03:35 PM IST`)**: Rejects Stop-Loss orders; rejects Market orders placed, modified, or cancelled after `03:25 PM` (`03:25 – 03:30 PM`); blocks all order actions during CAS single price matching (`03:30 – 03:35 PM`). Derivatives (`NFO`/`BFO`) trade continuously up to `03:40 PM` without CAS locks.
+  - **Revised MIS Cutoffs**: F&O Intraday (`MIS`) auto-squared off at **`03:25 PM IST`** (NRML overnight continues to `03:40 PM`); CAS Equity (`MIS`) auto-squared off at **`03:05 PM IST`** (only `CNC` delivery thereafter); Non-CAS Equity (`MIS`) auto-squared off at **`03:20 PM IST`**.
+
+### Live Session Candle Caching & IST Date Parsing
+- **Local Session Bar Persistence**: Implemented `saveLiveSessionBar()` and `getLiveSessionBars()` in [onlineLoader.ts](src/chart/onlineLoader.ts) and connected to `subscribeBar` in [chartInit.ts](src/chart/chartInit.ts). Live WebSocket candles are automatically stored in `localStorage` (`ystc_online_session_bars_*`) and merged with OpenAlgo REST history on page reloads (F5), preserving intraday candles even when broker REST servers lag during live market hours.
+- **IST Date & Timestamp Parsing**: Updated `getISTDateString()` and `parseOpenAlgoTimestampMs()` in [onlineLoader.ts](src/chart/onlineLoader.ts) to format history requests (`start_date`, `end_date`) using `Asia/Kolkata` timezone, set `end_date` to tomorrow's date for live market history requests to ensure broker API connectors include today's intraday candles (`09:15 AM` to current minute), parse numeric string timestamps (`/^\d+$/`) directly into milliseconds, and append explicit `+05:30` IST offsets to bare date-time strings, preventing UTC date/timestamp shifts and bar filtering.
+
+### JavaScript Obfuscator Upgrade
+- **Upgraded javascript-obfuscator to ^5.5.0**: Updated `javascript-obfuscator` devDependency in [package.json](package.json) from `^5.4.3` to `^5.5.0` and validated post-build JS obfuscation pipeline.
+
+### Vite Dependency Upgrade
+- **Upgraded Vite to ^8.2.0**: Updated `vite` devDependency in [package.json](package.json) from `^8.0.4` to `^8.2.0` and updated `package-lock.json`.
+
+## 2026-08-02
+
+### Git Repository & Data Directory Tracking Exclude
+- **Ignored `data/` & `referance_use_only/` Directories**: Added `data/` and `referance_use_only/` to `.gitignore` to exclude local market CSV data files and reference folders from Git tracking.
+- **Untracked Staged Files**: Removed `data/` and `referance_use_only/` index tracking via `git rm -r --cached` while preserving all local files on disk.
+
 ## 2026-07-31
 
 ### P&L-Aware Position Exit & Bracket Order Status Notifications (git: 1469106)
