@@ -2,6 +2,28 @@
 ---
 # Changelog
 
+## 2026-08-04
+
+### Order & System Audio Notifications Suite (pop.mp3, raven.mp3, offline.mp3 & jackpot.mp3)
+- **Full Platform Audio Sound System**: Expanded [audio.ts](src/utils/audio.ts) sound helpers and connected triggers to [ToastManager.ts](src/ui/ToastManager.ts) and [main.ts](src/main.ts):
+  - **`pop.mp3`**: Plays for successful order placement, execution, fill, and price/quantity modification alerts.
+  - **`raven.mp3`**: Plays for order rejections, insufficient funds, freeze limit violations, and execution failures.
+  - **`offline.mp3`**: Plays strictly when the top warning bar (*"You’re offline. The markets aren’t. Don’t miss your move."*) appears on screen during Online mode connection drops. Switching to normal Offline CSV charting mode does not trigger offline audio.
+  - **`jackpot.mp3`**: Copied `Jackpot.mp3` from `referance_use_only/` to `public/jackpot.mp3`. Plays when a Take Profit (Target Hit) order fills.
+  - **Online Connected Chime**: Web Audio C-E-G major tri-tone rising chime plays when switching to online mode or when OpenAlgo WebSocket authenticates.
+  - **Order Cancelled Tone**: Soft double-pulse tone plays when an order is cancelled.
+- **Premature Submission Notification Removal**: Removed unvalidated pre-submission notification broadcasts in [OrderPanel.ts](src/ui/OrderPanel.ts). Order submission toasts and sound triggers are now strictly emitted by [PaperBroker.ts](src/paper/PaperBroker.ts) after margin validation, ensuring rejected orders fire only `raven.mp3` and never play a false `pop.mp3` sound.
+
+### Global Floating Toast Notification System (ToastManager)
+- **Top Floating Toast System**: Created a unified global notification toast system in [ToastManager.ts](src/ui/ToastManager.ts) and mounted in [main.ts](src/main.ts). Automatically handles popups for all `trading:status:notify` and `ui:toast` events (order submissions, fills, paper trading alerts, error messages, and watchlist updates).
+- **Responsive Viewport Popups**: Displays top-center popups (`top: 12px`, `left: 50%`, `transform: translateX(-50%)`) on mobile screens ($\le 768\text{px}$) and top-right popups (`top: 48px`, `right: 16px`) on desktop, featuring smooth pop-in/pop-out animations, color-coded badges (`✓`, `⚠️`, `⚡`, `ℹ️`), auto-dismiss timer, and close button (`×`).
+- **Account Manager Listener Cleanup**: Removed redundant `trading:status:notify` event listener in [AccountManager.ts](src/ui/AccountManager.ts) that was double-invoking toast creation. Clean architectural fix without masking symptoms via buffer guards.
+
+### Account Manager Mobile Bottom Dock Responsiveness Fix
+- **Mobile Header Overlap Fix**: Resolved mobile layout issue where Account Manager header tabs (`Account Manager`, `Script Editor`), status indicators, status pills (`Live`, `Paper`), and dock action buttons (`↻`, `⚙`, `📲`, `⌃`) overlapped or squished onto multiple lines on small viewports ($\le 768\text{px}$).
+- **Single-Line Tab Layout**: Enforced `white-space: nowrap` and `flex-shrink: 0` on dock tabs in [AccountManager.ts](src/ui/AccountManager.ts) and added horizontal touch scrolling (`overflow-x: auto`) for header elements in [style.css](src/style.css).
+- **Responsive Status Badges & Summary Grid**: Hid non-essential metadata (`lastRefreshLabel`) on mobile screens, scaled down pill badges, and converted `.oa-account-summary` from fixed 5-column layout to auto-fit grid (`repeat(auto-fit, minmax(90px, 1fr))`) to keep financial metrics legible on mobile devices.
+
 ## 2026-08-03
 
 ### Fyers-Style Timezone Selector & Live Clock
