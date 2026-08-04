@@ -9,9 +9,10 @@
   - **`pop.mp3`**: Plays for successful order placement, execution, fill, and price/quantity modification alerts.
   - **`raven.mp3`**: Plays for order rejections, insufficient funds, freeze limit violations, and execution failures.
   - **`offline.mp3`**: Plays strictly when the top warning bar (*"You’re offline. The markets aren’t. Don’t miss your move."*) appears on screen during Online mode connection drops. Switching to normal Offline CSV charting mode does not trigger offline audio.
-  - **`jackpot.mp3`**: Copied `Jackpot.mp3` from `referance_use_only/` to `public/jackpot.mp3`. Plays when a Take Profit (Target Hit) order fills.
+  - **`jackpot.mp3`**: Copied `Jackpot.mp3` from `referance_use_only/` to `public/jackpot.mp3`. Plays when a Take Profit (Target Hit) order fills. Placing a Take Profit order plays the standard `pop.mp3`.
   - **Online Connected Chime**: Web Audio C-E-G major tri-tone rising chime plays when switching to online mode or when OpenAlgo WebSocket authenticates.
   - **Order Cancelled Tone**: Soft double-pulse tone plays when an order is cancelled.
+- **Customizable Sound Settings Toggles**: Added interactive ON/OFF sound setting checkboxes to [SettingsModal.ts](src/ui/SettingsModal.ts) under Trading tab with `localStorage` persistence. Added `isSoundEnabled()` helper in [audio.ts](src/utils/audio.ts) to verify master and granular sound switches (`sound_master_enabled`, `sound_execution_enabled`, `sound_rejection_enabled`, `sound_target_enabled`, `sound_cancel_enabled`, `sound_online_enabled`, `sound_offline_enabled`). All sounds remain enabled (`true`) by default.
 - **Premature Submission Notification Removal**: Removed unvalidated pre-submission notification broadcasts in [OrderPanel.ts](src/ui/OrderPanel.ts). Order submission toasts and sound triggers are now strictly emitted by [PaperBroker.ts](src/paper/PaperBroker.ts) after margin validation, ensuring rejected orders fire only `raven.mp3` and never play a false `pop.mp3` sound.
 
 ### Global Floating Toast Notification System (ToastManager)
