@@ -1,4 +1,4 @@
-# YSTC CHARTS - Trading Chart platform Alternative to TradingView
+# YSTC CHARTS - Trading Chart Platform for Retail Traders
 ---
 # Changelog
 
