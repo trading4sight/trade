@@ -1,5 +1,5 @@
 # YSTC CHARTS - Trading Chart Platform for Retail Traders
----
+
 # Changelog
 
 ## 2026-08-04
