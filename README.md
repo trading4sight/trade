@@ -2,6 +2,11 @@
 
 # Changelog
 
+## 2026-08-08
+
+### ChargesPopover Layer Elevation Fix
+- **`Charges:` Popover `z-index` Elevated to `10100`**: Updated inline `cssText` in [ChargesPopover.ts](src/ui/ChargesPopover.ts) from `z-index: 10000` to `z-index: 10100`. The itemized charges breakdown popover (opened by clicking `Charges: ₹X.XX` inside the floating Order Ticket) now renders above both the floating Order Ticket (`z-index: 10050`) and the floating Option Chain window (`z-index: 10000`), preventing it from being hidden behind the Option Chain when both windows are open simultaneously.
+
 ## 2026-08-07
 
 #### Floating Option Chain Window & FYERS 1:1 Summary Header Redesign
