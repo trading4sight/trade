@@ -2,6 +2,13 @@
 
 # Changelog
 
+## 2026-08-13
+
+### Live Volume Calculation & Indicator Y-Axis Badge Fixes
+- **Intra-Candle Tick Volume Baseline Preserved (`chartInit.ts`)**: Refactored `calculateLiveCandleVolume()` in [chartInit.ts](src/chart/chartInit.ts) to track `lastCumulativeVolume` across incoming WebSocket ticks. When a new candle bucket starts, `cumulativeVolumeBaseline` transitions to the final cumulative volume of the previous candle bucket instead of overwriting baseline on the new candle's first tick. Intra-candle volume updates now accumulate monotonically in real-time without shrinking or collapsing mid-candle.
+- **FYERS 1:1 Indicator Y-Axis Live Value Badge (`chartSettings.ts`)**: Enabled `indicator.lastValueMark` in [chartSettings.ts](src/chart/chartSettings.ts) to render live value badge pills on indicator sub-pane Y-axes matching FYERS 1:1.
+- **`VolumeYSTC` Live Refresh & MA Badge Suppression (`volumeYSTC.ts`)**: Added `tick:update` event listener in [volumeYSTC.ts](src/indicators/volumeYSTC.ts) to invalidate secondary symbol cache on incoming live ticks. Updated `buildResults()` and `draw()` to pass `rawAvgMA` to `getPaletteColor()`, keeping canvas volume bar colors 100% active and vibrant whether MA is ON or OFF, while setting display `avgMA = undefined` when MA is OFF (`showMAV: false`) to suppress the `Vol MA` Y-axis badge.
+
 ## 2026-08-08
 
 ### ChargesPopover Layer Elevation Fix
