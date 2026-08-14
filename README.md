@@ -2,6 +2,14 @@
 
 # Changelog
 
+## 2026-08-14
+
+### Order Surfaces Targeted & Dynamic Freeze Limit Fetching
+- **Scoped Freeze Limit Fetching on Order Surfaces**: Confined freeze limit requests exclusively to the two order execution surfaces: the Floating Order Ticket Modal ([OrderModal.ts](src/ui/OrderModal.ts)) and the DOM / Right Order Panel ([OrderPanel.ts](src/ui/OrderPanel.ts)). General charting, watchlist browsing, alerts, indicators, and user scripts do not trigger freeze queries.
+- **Clean Freeze Limit State Resets**: Ensured `this.freezeQty` is strictly initialized to `0` at the start of `fetchSymbolMetadata()` and `refreshLotSize()`, on modal hide/close, on non-success API responses, in offline mode, and in catch blocks. Eliminates stale freeze limits carrying over across symbol switches.
+- **Order Panel View Activation Trigger**: Added dynamic `fetchSymbolMetadata()` invocation when opening or switching into the Right Panel `'trade'` view (`right-panel:view`), guaranteeing fresh broker lot size, tick size, and freeze limit state on demand.
+- **Lot-Size Fallback Scaling**: Enhanced `OrderPanel.ts` and `OrderModal.ts` to query `getRegisteredSymbolLotSize()` as a fallback if API metadata does not provide a lot size > 1 for derivative instruments before calculating scaled freeze limits.
+
 ## 2026-08-13
 
 ### Live Volume Calculation & Indicator Y-Axis Badge Fixes
