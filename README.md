@@ -2,6 +2,18 @@
 
 # Changelog
 
+## 2026-08-18
+
+### Dedicated Flattrade Broker Pricing Model (`marginHelper.ts`, `AccountManager.ts`)
+- **1:1 Flattrade Schedule Integration**: Added dedicated `'flattrade'` broker template to the Paper Trading engine with **₹0 Brokerage** across all segments (Equity Delivery CNC, Intraday MIS, Equity Futures & Options, MCX Commodities, and Currency).
+- **Exact Exchange & Statutory Schedules**: Implemented Flattrade-specific exchange transaction charges (NSE Futures `0.00183%`, Options `0.03553%`, BSE `0%` Futures, MCX Futures `0.0021%`, MCX Options `0.041%`) and exact segment IPFT fees (Equity `₹10/Cr`, Options `₹50/Cr`, Currency Options `₹200/Cr`).
+- **Dropdown Option Added**: Added clean `"Flattrade"` option to the Paper Brokerage Charges dropdown in [AccountManager.ts](src/ui/AccountManager.ts).
+
+### Chart Watermark Logo Rebrand to "YSTC Charts"
+- **Watermark Typography Scaled & Fully Bold (`public/icons.svg`, `style.css`)**: Scaled the brand watermark text to a prominent `52px` bold font for both **YSTC** and **Charts** (`font-weight="700"`), updated viewBox to `0 0 480 72`, and expanded hover reveal width to `190px` for optimal optical balance with the circular trading mark.
+- **Watermark Interaction Preserved (`ChartWatermark.ts`)**: Maintained collapsed-to-expanded hover-reveal behavior (compact 32px icon mark expanding to 190px on hover/focus).
+- **Branding Metadata & Component Integration (`icons.ts`, `ChartWatermark.ts`)**: Added `ystcChartsLogoEl` export for unified canvas branding. Updated title to `'YSTC Charts - Start your trading journey'` and accessibility attributes while preserving destination link `https://ystc.in/start-your-trading-journey`.
+
 ## 2026-08-14
 
 ### Order Surfaces Targeted & Dynamic Freeze Limit Fetching
