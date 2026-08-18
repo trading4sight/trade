@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./typescript-DoGKX_Wj.js","./editor.api-Cz1Ts82E.js","./index-CkkN2seC.js","./index-DxlO2LOs.css","./editor-jjEx9u7D.css"])))=>i.map(i=>d[i]);
+import{t as e}from"./index-CkkN2seC.js";import{t}from"./contribution-Dbgdzcqt.js";t({id:`typescript`,extensions:[`.ts`,`.tsx`,`.cts`,`.mts`],aliases:[`TypeScript`,`ts`,`typescript`],mimetypes:[`text/typescript`],loader:()=>e(()=>import(`./typescript-DoGKX_Wj.js`),__vite__mapDeps([0,1,2,3,4]),import.meta.url)});

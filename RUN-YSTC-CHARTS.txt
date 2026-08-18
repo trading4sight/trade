@@ -1,0 +1,17 @@
+YSTC CHARTS Dist Runtime
+
+How to run:
+1. Make sure Node.js 18+ is installed.
+2. Paste your market symbol folders into the "data" folder next to this file.
+3. Open a terminal inside this dist folder.
+4. Run:
+   node server.mjs
+5. Open:
+   http://localhost:4173
+
+Notes:
+- The app scans data/ at runtime, so newly pasted symbol folders appear after refresh.
+- CSV structure must stay:
+  data/<SYMBOL>/<SYMBOL>-<FILECODE>-<EXCHANGE>.csv
+- If you want a different port:
+  set PORT=5001 && node server.mjs
