@@ -2,6 +2,39 @@
 
 # Changelog
 
+## 2026-09-10
+
+### KlineCharts v10.0.3 Lifecycle Cleanup & fixedZLevel Alignment
+- **Official Lifecycle Disposal (`ChartManager.ts`, `MultiChartWorkspace.ts`)**: Replaced non-existent `chart.destroy?.()` calls with KlineCharts' official `dispose(containerId)` unmount API. Container IDs are now systematically tracked and freed upon chart destruction, preventing canvas listener leaks and eliminating container identification collisions during multi-chart layout re-renders.
+- **Overlay Stacking & `fixedZLevel` Priority (`activeOrder.ts`, `activePosition.ts`)**: Configured `zLevel: 100` and `fixedZLevel: true` on `activeOrder` and `activePosition` overlay templates. Order lines, drag handles, P&L pills, and close buttons now reliably remain above background drawings (such as rectangles and volume profiles) when hovered.
+- **Multi-Chart Drawing Snapshot Synchronization (`ChartManager.ts`)**: Extended `OverlaySnapshot` and `snapshotOverlay()` to preserve `fixedZLevel` across multi-chart drawing synchronizations.
+- **YSTC Developer SDK & Bridge Support (`ystc-sdk.d.ts`, `KlineChartsBridge.ts`, `SDKHelpModal.ts`)**: Exposed optional `zLevel?: number` and `fixedZLevel?: boolean` in `@ystc/sdk`'s `OverlayConfig` interface, forwarded them through `KlineChartsBridge.registerCustomOverlay()`, and documented usage in `SDKHelpModal.ts`.
+
+### Legacy Documentation Retirement (`docs/broker` Cleanup)
+- **Deleted `docs/broker/` and Retired `docs/` Root**: Removed obsolete `docs/broker/` directory tree, completing the project-wide consolidation of all frozen reference documentation into `doc/`.
+- **Updated Key Paths Specification**: Updated project root key paths table in [AGENTS.md](AGENTS.md) to formally designate `doc/` as the single source of truth for reference docs.
+
+### Frozen Documentation Architecture: Indicators & UI Migration
+- **Relocated Indicators & UI Documentation to `doc/`**: Moved `docs/Indicators/` and `docs/UI/` to [doc/Indicators/](doc/Indicators/) and [doc/UI/](doc/UI/) as part of unifying all frozen documentation into the `doc/` repository.
+- **Cross-Project References Updated**: Aligned all documentation links in [AGENTS.md](AGENTS.md), [SETUP.md](SETUP.md), and developer skills ([volume-profile](.agents/skills/volume-profile/SKILL.md), [swing-highlow](.agents/skills/swing-highlow/SKILL.md), [tpo-indicator](.agents/skills/tpo-indicator/SKILL.md), [ui-component](.agents/skills/ui-component/SKILL.md), [openalgo-websocket](.agents/skills/openalgo-websocket/SKILL.md)).
+
+### OpenAlgo v1 Protocol Alignment & Endpoint Fixes
+- **Corrected Positionbook Sync Endpoint (`ChartManager.ts`)**: Fixed typo in `refreshLiveTradingState()` from invalid `POST /api/v1/positions` to the official OpenAlgo endpoint `POST /api/v1/positionbook`, resolving HTTP 404 errors during live position synchronization.
+- **Telegram & WhatsApp Single-Recipient Alignment (`ChartManager.ts`, `PaperBroker.ts`)**: Updated notification payload construction to strictly adhere to OpenAlgo Utilities API rules where exactly one recipient mode is permitted (`self`, `username`, `phone`, or `phones`). Resolved bug where `self: true` took precedence over specified custom usernames.
+- **Expanded Online Exchange Recognition (`symbols.ts`)**: Enhanced `detectOnlineExchange()` to support `MCX_INDEX` (e.g. `BULLDEX`, `ENRGDEX`), `CRYPTO` (e.g. `BTCUSDT`, `ETHUSDT`), and explicit exchange prefixes (`MCX:`, `NFO:`, `BFO:`, `CDS:`, `CRYPTO:`) matching the 14 `VALID_EXCHANGES` constants.
+
+### OpenAlgo Documentation Architecture Migration to `doc/OpenAlgo/`
+- **Designated `doc/OpenAlgo/` as Official Frozen Source of Truth**: Established [doc/OpenAlgo/](doc/OpenAlgo/) as the official frozen documentation source of truth for OpenAlgo REST, WebSocket, Order Constants, Portfolio, and Strategy RMS APIs. Retired legacy `docs/OpenAlgo/`.
+- **API Coverage Expanded to 71 Endpoints**: Documented Portfolio Analytics API (`/api/v1/portfolio/*`), Strategy RMS Engine API (`/api/v1/strategy/*`), SIP Analytics (`/api/v1/sip/*`), explicit Marshmallow schema validation (`HTTP 400` on undeclared fields), and updated exchange constants (`MCX_INDEX`, `CRYPTO`).
+- **Architectural Rules & Skills Aligned**: Updated documentation rules and references in [AGENTS.md](AGENTS.md) and developer skills ([openalgo-rest](.agents/skills/openalgo-rest/SKILL.md), [openalgo-websocket](.agents/skills/openalgo-websocket/SKILL.md)).
+
+### KlineCharts v10.0.3 Upgrade & Frozen Documentation Architecture
+- **Dependency Upgraded to `klinecharts@10.0.3`**: Upgraded `klinecharts` from `^10.0.2` to `^10.0.3` in [package.json](package.json). Gained upstream backward pagination fix in `DataLoader`, default indicator style parsing calculation optimizations, and support for the `fixedZLevel?: boolean` overlay property.
+- **Designated `doc/` as Official Frozen Documentation Source of Truth**: Established `doc/klinecharts-v10.0.3/` as the primary frozen local source of truth for KlineCharts v10 APIs. Retired legacy `docs/klinecharts-v10.0.0/` and updated architectural documentation rules and reference tables in [AGENTS.md](AGENTS.md).
+
+### Project Configuration & Workspace Structure
+- **Excluded `doc/` Folder from Git (`.gitignore`)**: Created local `doc/` directory in project root and added `doc/` to `.gitignore` to keep local documentation and notes excluded from version control tracking.
+
 ## 2026-08-18
 
 ### Dedicated Flattrade Broker Pricing Model (`marginHelper.ts`, `AccountManager.ts`)
