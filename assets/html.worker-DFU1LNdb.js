@@ -1,0 +1,1 @@
+function e(e){return new Worker(``+new URL(`html.worker-kuerCChc.js`,import.meta.url).href,{name:e?.name})}export{e as default};
