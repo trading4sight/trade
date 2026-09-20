@@ -2,6 +2,18 @@
 
 # Changelog
 
+## 2026-09-19
+
+### Fix: Online Source Data Fetch Range for Fixed TF Calculation Methods
+- **Chart-Range-Aware Source Fetching (`onlineLoader.ts`)**: Added optional `FetchDateRange` parameter to `fetchCachedBars()` and `getOnlineCachedBars()`. When provided, the OpenAlgo history API call uses the explicit start/end dates instead of the generic default duration (`getFetchDurationDays()`), ensuring the fetched data covers the chart's loaded date range.
+- **Bidirectional Cache Coverage & Pending Duration (`onlineLoader.ts`)**: Enhanced cache validation to verify both start and end timestamps against the requested `dateRange` (preventing truncation at either boundary). Updated `onlinePendingDurationDays` registration and pending de-duplication to correctly compute effective duration from `dateRange`.
+- **FRVP Source Resolution (`fixedRangeVolumeProfile.ts`)**: When the Calculation method is a fixed timeframe (`source_tf:X` — e.g. 1m, 5m, 15m) or a custom volume source symbol is selected, `requestResolvedSourceBars()` derives the chart's loaded data range from `chart.getDataList()` and passes it to the data fetcher. This ensures lower-TF and custom volume source bars cover the full chart range.
+- **Session Volume Profile (`sessionVolumeProfile.ts`)**: In `requestResolvedSourceBars()`, `chartDateRange` is now derived from `chart.getDataList()` and supplied whenever a fixed timeframe method or custom volume source symbol is selected, aligning with FRVP.
+- **Volume Cluster Historical Anchoring (`volumeCluster.ts`)**: Fixed an issue where 5S data requests in online mode anchored to `new Date()` (today). In `requestResolvedSourceBars()` and `requestResolvedVolumeSourceBars()`, `chartDateRange` is now anchored to the chart's loaded end timestamp (`allBars[allBars.length - 1].timestamp`) and bounded by `historyRange`, ensuring 5S cluster events accurately match historical candles when navigating back in time.
+- **TPO Source Resolution (`tpoProfile.ts`)**: `requestResolvedTpoSourceBars()` passes the chart's loaded data range when fetching TPO letter source bars (resolved from block size). `requestResolvedTpoVolumeSourceBars()` passes the chart range when the volume Calculation method is a fixed timeframe or a custom volume source is selected.
+- **Fixed Range TPO & Session TPO**: Both inherit the fix automatically via the shared TPO source resolution functions.
+- **Scope**: Threshold-based methods (`tv_style`, `essential_10k`, `plus_20k`, `premium_40k`) remain threshold-driven. Fixed timeframe methods, Volume Cluster, and custom volume sources now reliably cover historical chart dates.
+
 ## 2026-09-10
 
 ### KlineCharts v10.0.3 Lifecycle Cleanup & fixedZLevel Alignment
