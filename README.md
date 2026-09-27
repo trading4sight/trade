@@ -2,6 +2,62 @@
 
 # Changelog
 
+## 2026-09-27
+
+### Feature: Standardized Modal Chrome for Indicator and Drawing Tool Settings Modals
+
+- **Context & Design Unification**:
+  - Aligned all 10 drawing tool modals and indicator settings modals to a unified TradingView design language.
+  - Standardized modal dimensions: 400px fixed width (`min(400px, calc(100vw - 32px))`).
+  - Standardized header chrome: 14px semibold title with inline edit/rename pencil icon for drawing tools and close (`✕`) button.
+  - Standardized tab underline: clean near-black indicator (`var(--text-primary)`) replacing legacy accent blue.
+  - Standardized footer chrome: `Template ▾` dropdown popover (`Set as default`, `Apply defaults`, `Reset` for drawing tools; `Apply defaults`, `Save as template` for indicators; plus custom preset actions for Fib retracement), secondary `Cancel` button, and prominent near-black `Ok` primary action button (`var(--overlay-strong)` / `#111111`).
+- **Shared Chrome Utility**:
+  - Created [`src/ui/modalChrome.ts`](src/ui/modalChrome.ts) exporting `buildModalHeader()` and `buildModalFooter()` to eliminate duplicate DOM boilerplate across modals.
+  - Supported optional `showPencil` (omitted for indicators) and optional `customTemplateItems` (preserving custom preset management in `FibonacciModal`).
+- **Modals Migrated**:
+  - [`RectangleModal.ts`](src/ui/RectangleModal.ts)
+  - [`TextModal.ts`](src/ui/TextModal.ts)
+  - [`HorizontalRayModal.ts`](src/ui/HorizontalRayModal.ts)
+  - [`FibonacciModal.ts`](src/ui/FibonacciModal.ts)
+  - [`BrushModal.ts`](src/ui/BrushModal.ts)
+  - [`AnchoredVwapModal.ts`](src/ui/AnchoredVwapModal.ts)
+  - [`FixedRangeVolumeProfileModal.ts`](src/ui/FixedRangeVolumeProfileModal.ts)
+  - [`SessionVolumeProfileModal.ts`](src/ui/SessionVolumeProfileModal.ts)
+  - [`TpoProfileModal.ts`](src/ui/TpoProfileModal.ts)
+  - [`VolumeClusterModal.ts`](src/ui/VolumeClusterModal.ts)
+  - [`IndicatorSettingsModal.ts`](src/ui/IndicatorSettingsModal.ts)
+- **CSS System & Layout**:
+  - Updated [style.css](src/style.css) with shared `vp-settings-modal__*` classes (`__title-edit`, `__btn--template`, `__template-popover`, `__template-option`, `48px` footer height, `32px` button height).
+- **Verification**: `npm run build` — 0 TypeScript compilation errors, asset packaging and obfuscation clean.
+
+### Fix: Sub-Pane Indicator Legend Position Displacement on Dock Toggle
+
+- **Bug**: Opening or closing the Script Editor / Account Manager bottom dock caused the indicator status bar (legend row) for sub-pane indicators — Volume, MACD, RSI — to render at the wrong vertical position. Main candle-pane indicators were unaffected because their `top` offset is near zero.
+- **Root Cause**: `AccountManager` fired `window.dispatchEvent(new Event('resize'))` immediately after triggering a DOM layout change. `ChartManager` received this via `window.addEventListener('resize', ...)` and called `scheduleChartResize()`, which enqueued `flushIndicatorLegendLayouts()` in a `requestAnimationFrame`. At that point the dock was still mid-transition, so `paneDom.getBoundingClientRect()` returned incorrect (partially-animated) `top` values for sub-panes. The legend `section.style.top` was then set to a stale value with no subsequent correction.
+- **Fix**:
+  - [`ChartManager.ts`](src/chart/ChartManager.ts): Replaced `window.addEventListener('resize', handleViewportResize)` with a `ResizeObserver` on `chartStageEl`. `ResizeObserver` only fires after the browser has finished laying out the observed element, guaranteeing that `getBoundingClientRect()` returns correct values. Mobile orientation / visual-viewport listeners retained on `window`.
+  - [`AccountManager.ts`](src/ui/AccountManager.ts): Removed all 7 `window.dispatchEvent(new Event('resize'))` calls from tab-click, close-button, and drag-resize handlers — now redundant since the `ResizeObserver` triggers automatically and correctly.
+- **Verification**: `npm run build` — 0 TypeScript errors, production build clean.
+
+## 2026-09-26
+
+### Fix: Chart Visual State Persistence, Cancel Revert, and Template Management
+- **Chart Visual Settings Persistence**:
+  - Implemented `normalizeChartSettings()`, `loadChartSettings()`, and `saveChartSettings()` in [chartSettings.ts](src/chart/chartSettings.ts) using `localStorage` key `'ystc_chart_settings'`.
+  - Safely normalizes nested objects (`symbol`, `scales`, `canvas`, `statusLine`, `events`, `trading`) with defaults fallback.
+  - Wired [ChartManager.ts](src/chart/ChartManager.ts), [SettingsModal.ts](src/ui/SettingsModal.ts), [SeriesLegend.ts](src/ui/SeriesLegend.ts), and [MultiChartWorkspace.ts](src/chart/MultiChartWorkspace.ts) to initialize from and persist to `localStorage`. Candle styles, colors, wicks, borders, timezone, and session breaks now persist across page reloads.
+- **Modal "Cancel" Button Revert**:
+  - Implemented initial state snapshotting (`beforeOpenSettings` and `beforeOpenStorage`) in [SettingsModal.ts](src/ui/SettingsModal.ts) when opening the modal.
+  - Clicking **Cancel**, the close button (`×`), or the backdrop now restores the original visual settings and re-emits `settings:apply` to immediately revert the chart canvas, preventing unconfirmed preview changes from sticking.
+  - Clicking **Ok** commits the settings and writes them to `localStorage`.
+- **Footer Template Dropdown & Preset Management**:
+  - Replaced the static, dummy `<select>` template element with an interactive TradingView-style Template dropdown popover in [SettingsModal.ts](src/ui/SettingsModal.ts).
+  - Added **"Save as..."** to prompt for a template name and save custom presets to `localStorage` (`'ystc_chart_settings_templates'`).
+  - Added **"Apply defaults"** to quickly restore standard chart defaults.
+  - Added saved templates list with single-click preset application and individual preset deletion with a trash button.
+- **Verification**: Verified via `npm run build` (0 TypeScript errors, production obfuscator passing).
+
 ## 2026-09-23
 
 ### Optimization: Monaco Hybrid Chunking Strategy & Unused Worker Pruning
