@@ -2,6 +2,118 @@
 
 # Changelog
 
+## 2026-09-28
+
+### Fix: Prevent Search Input Squeezing in Symbol & Indicator Modals (style.css)
+
+- **Search Bar Flex Geometry Protection (`src/style.css`)**:
+  - Added `flex-shrink: 0` and explicit `min-height: 38px` to `.symbol-search-modal__search` and `.indicator-modal__search`.
+  - Added `flex-shrink: 0` to `.symbol-search-modal__header`, `.symbol-search-modal__filters`, and `.symbol-search-modal__import-status`.
+  - Prevents flexbox compression from squishing the search input field flat when search results expand to fill the modal panel.
+
+### Fix: Multi-Chart Layout Dropdown Alignment, Inner Padding, and Preset Grid (TopBar.ts, style.css)
+
+- **Dropdown Viewport & Anchor Positioning (`src/ui/TopBar.ts`)**:
+  - Enhanced `resolveMenuPosition` to accept an `align: 'left' | 'right'` parameter, aligning right-side utility menus (`align: 'right'`) flush with the trigger button's right edge (`rect.right - menuWidth`) rather than forcing left-side coordinates.
+  - Corrected layout menu target width from `432px` to `316px`, aligning coordinate calculation with the actual CSS card width.
+- **Edge Padding & Spacing Containment (`src/style.css`)**:
+  - Added `padding: 12px 14px` on `.layout-menu` (replacing `padding: 6px 0`), preventing preset tiles and sync sliders from colliding with or bleeding against the outer card borders.
+  - Added subtle modern box shadow `0 4px 16px rgba(0, 0, 0, 0.12)` with `border-radius: var(--menu-radius, 6px)`.
+- **Layout Preset Tile Grid Modernization (`src/ui/TopBar.ts`, `src/style.css`)**:
+  - Eliminated numeric row labels (`1, 2, 3...`) and redundant horizontal dividing lines between every row.
+  - Converted `.layout-menu__row` to flex layout with `gap: 6px` and interactive `30px × 26px` preset cards with smooth hover states and active accent borders (`var(--accent-blue)`).
+  - Added `.layout-menu__divider` separating the preset grid from the synchronization settings.
+- **Sync in Layout Controls (`src/ui/TopBar.ts`, `src/style.css`)**:
+  - Replaced separate `?` text spans with clean native `title` tooltip attributes on each sync item row.
+  - Restyled sync items with comfortable row padding (`padding: 4px 6px`), hover highlights, and smooth TradingView blue toggle sliders (`var(--accent-blue)`) with 14px circular knobs.
+
+### Fix: Order Ticket LTP Display, Duplicate Depth Rows, and DOM Price Synchronization (OrderModal.ts, OrderPanel.ts, chartInit.ts, onlineLoader.ts)
+
+- **Order Ticket LTP Display & Real-Time Sync (`src/ui/OrderModal.ts`)**:
+  - Replaced incorrect `Number(tick.close ?? ...)` extraction with `Number(tick.ltp ?? tick.last_price ?? tick.price ?? 0)`, preventing broker live quote packets from stamping previous day close (`8847.00`) as the active trade price.
+  - Subscribed to both `tick:ltp` and `chart:data` in `OrderModal.ts` to guarantee immediate initialization from active chart bar data upon modal open.
+- **Resting Depth Price Aggregation (`src/ui/OrderModal.ts`, `src/ui/OrderPanel.ts`)**:
+  - Implemented `aggregateDepth` bucket summing (aligned with `openalgo-charts-v2.5.7` `buildRows` pattern) to merge multiple resting orders at identical price levels into a single row.
+  - Resolved duplicate row rendering (`9216.00` showing twice with quantities 6 and 9), combining them into a single price row with quantity 15 and correct order counts.
+  - Fixed `OrderPanel.ts` DOM ladder to display aggregated resting liquidity rather than dropping subsequent order lots via `.find()`.
+- **Chart Tick LTP Sanitization & Session Cache Cleansing (`src/chart/chartInit.ts`, `src/chart/onlineLoader.ts`)**:
+  - Removed `payload.close` fallback in `chartInit.ts` `subscribeBar`, strictly requiring valid positive `payload.ltp` or `payload.last_price` to prevent previous day close prices from mutating live candle closes.
+  - Added session bar sanitization in `getLiveSessionBars()` to automatically purge any stale off-tick fractional bars from `localStorage` on whole-point commodity contracts (such as MCX CRUDEOIL).
+
+### Fix: DOM Depth of Market & Chart Price Synchronization (wsClient.ts, OrderPanel.ts, OrderModal.ts)
+
+- **Eliminated Synthetic Midpoint LTP Fabrication (`src/openalgo/wsClient.ts`)**:
+  - Removed artificial `(bestBid + bestAsk) / 2` midpoint calculation previously triggered when Mode 3 (Depth) packets arrived without `ltp`.
+  - Level 2 market depth updates now emit strictly to `tick:depth`; `tick:ltp` and `tick:update` are only emitted when an authentic executed trade price (`data.ltp` or `data.last_price`) is present.
+  - Prevents non-traded decimal prices (e.g. `719.48` on a 0.05 NSE tick schedule) from contaminating chart candle close values and desynchronizing the chart price line from the DOM price ladder.
+- **Wire Subscription Compatibility (`src/openalgo/wsClient.ts`)**:
+  - Configured `executeSubscribe` for Mode 3 to send both `depth` and `depth_level` keys in the subscription payload, matching `openalgo-charts-v2.5.7` protocol standards across all proxy versions.
+- **Defensive Market Depth Schema Normalization (`src/openalgo/wsClient.ts`, `src/ui/OrderPanel.ts`, `src/ui/OrderModal.ts`)**:
+  - Normalized depth structures to provide both `buy`/`sell` and `bids`/`asks` aliases with uniform `price`, `quantity` (supporting both `quantity` and `qty`), and `orders` fields.
+  - Eliminated false triggers of mock depth fallbacks that occurred when upstream brokers or REST endpoints returned `bids`/`asks` arrays.
+- **Initial Depth Seeding & Tick-Snapped Row Highlighting (`src/ui/OrderPanel.ts`)**:
+  - Added REST `/api/v1/depth` query inside `fetchSymbolMetadata()` to immediately seed the DOM ladder with real broker book depth upon symbol switch or panel open without waiting for subsequent WebSocket packets.
+  - Added `chart:data` event listener in `OrderPanel.ts` to immediately seed `this.ltp` from the active chart's last bar close if uninitialized.
+  - Snapped `this.ltp` comparison against ladder row prices using `Math.round(this.ltp / tickSize) * tickSize` to prevent floating-point precision mismatch on LTP row highlights.
+  - Preferred official `totalbuyqty` and `totalsellqty` fields from depth payloads in the DOM ladder totals bar.
+
+### Fix: Y-Axis Last Value Mark Boundary Clamping (chartInit.ts)
+
+- **Sub-Pane & Axis Boundary Badge Clamping (`src/chart/chartInit.ts`)**:
+  - Implemented `patchYAxisNicePixel(chart)` overriding `YAxisImp.prototype.convertToNicePixel` with a fixed safe badge margin (`badgeMargin = 10px`).
+  - Replaced KlineCharts' default percentage-based clamping (`height * 0.98`), which only provided $2\text{px}$–$2.6\text{px}$ clearance in sub-panes and caused centered $17\text{px}$ tall badges to overflow $\sim 6.5\text{px}$ below the pane divider into the time axis.
+  - Near-zero volume labels (such as `4.31K`) and low-scale indicator badges now sit cleanly bounded inside the pane with their bottom edge $1.5\text{px}$ above the divider line, eliminating bleed across pane borders.
+  - Automatically protects all present and future panes and indicator last value badges.
+
+### Fix: Eliminated Sub-Pane Bottom Dead Space for Volume Histogram Indicators (ChartManager.ts)
+
+- **Sub-Pane Y-Axis Gap Optimization (`src/chart/ChartManager.ts`)**:
+  - Implemented `configureSubPaneYAxes()` automatically configuring sub-pane Y-axes based on active indicator types.
+  - Detected volume histogram indicators (`series === 'volume'`, `minValue === 0`, `VolumeYSTC`, `VOL`, and bar figures with `baseValue === 0`).
+  - Overrode sub-pane Y-axis gap with `gap: { top: 0.15, bottom: 0 }`, eliminating KlineCharts default `0.1` (10%) bottom padding that previously extended non-negative volume scales into artificial negative values.
+  - Volume histogram bars now sit 100% flush against the bottom divider line/time axis without empty dead space, matching 1:1 TradingView behavior while preserving 15% top headroom for indicator legends and titles.
+  - Wired `configureSubPaneYAxes()` across `applyCurrentChartSettings()`, `indicator:add`, and custom indicator registration events.
+
+### Feature: 2px Panel Grid Gutter & Rounded Card Layout (1:1 TradingView System)
+
+- **Layout Grid & 2px Gutter Architecture (`src/style.css`)**:
+  - Introduced `--panel-gutter: 2px`, `--panel-gutter-bg: #ebebeb`, and `--panel-card-radius: 4px` CSS design tokens in `:root`.
+  - Configured `.app-container` and `.workspace` with `background: var(--panel-gutter-bg, #ebebeb)` to create crisp neutral channel separation between panels.
+  - Added 2px gutter margins and gap layouts across `.top-bar`, `.workspace`, `.center-column`, and `.right-column`.
+  - Preserved 100% flush outer screen perimeter (`padding: 0` on `.workspace`), maximizing chart viewable area while keeping gutters strictly internal.
+- **Card-Enclosure Borders (`src/style.css`, `src/main.ts`)**:
+  - Implemented `.chart-card` container enclosing `.main-area`, `#replay-modal-root`, and `#chart-footer` with continuous `1px solid var(--border-color)` and `border-radius: var(--panel-card-radius, 4px)`.
+  - Upgraded `#tool-bar`, `#account-manager`, `.right-rail`, and `.right-panel` to perimeter-flush card containers with 4px border-radius and 1px border framing facing inward toward internal gutters.
+- **UI Component Skill Synchronization (`.agents/skills/ui-component/SKILL.md`)**:
+  - Documented layout tokens `--panel-gutter`, `--panel-gutter-bg`, and `--panel-card-radius`.
+  - Added Section 6 "Panel Grid Gutter & Rounded Card Layout (1:1 TradingView System)" specifying flush perimeter boundaries, card enclosure standards, and DOM hierarchy.
+
+### Feature: Standardized 3-Column Modal Form Controls, Circle Modal, and Floating Drawing Toolbar
+
+- **Standardized Modal Form Controls (`src/ui/formControls.ts`)**:
+  - Implemented TradingView-standard 3-column form grid system (`.modal-form-row`: label left, control center, aux/inputs right).
+  - Built custom color swatch button (`createColorSwatch`) with 24x24px rounded frame, subtle checkerboard backdrop, focus ring, and popover palette picker with opacity slider.
+  - Added reusable helper factories: `createFormRow`, `createColorPairRow`, `createLineStylePicker`, `createNumberStepper`, and `createSelect`.
+  - Added dedicated styling tokens in `src/style.css` (`.modal-form-row`, `.modal-form-swatch`, `.modal-color-popover`, `.modal-form-input`, `.modal-form-select`).
+- **Indicator Settings Modal Form Modernization (`src/ui/IndicatorSettingsModal.ts`)**:
+  - Upgraded `buildField`, `buildStyleToggleRow`, and `buildColorControl` to use pure DOM `formControls.ts`.
+  - Unifies 100% of platform indicators (RSI, MACD, Bollinger Bands, Stochastics, Moving Averages, etc.) with custom color swatches, opacity popovers, number steppers, and styled selects.
+- **Anchored VWAP Modal Modernization (`src/ui/AnchoredVwapModal.ts`)**:
+  - Refactored from raw template strings and browser-native `<input type="color">` to clean, typed DOM controls.
+- **Circle Drawing Tool & Dedicated Settings Modal**:
+  - Added dynamic configuration and persistence in [`src/overlays/circleSettings.ts`](src/overlays/circleSettings.ts).
+  - Upgraded [`src/overlays/circle.ts`](src/overlays/circle.ts) to dynamically render border color, border thickness, line style, and background fill with opacity from `extendData`.
+  - Created [`src/ui/CircleModal.ts`](src/ui/CircleModal.ts) providing dedicated styling controls for circle drawings.
+  - Wired into `ChartManager.ts`, `main.ts`, and context menu / ToolBar settings triggers.
+- **In-Canvas Floating Drawing Toolbar (`src/ui/FloatingDrawingToolbar.ts`)**:
+  - Built interactive floating toolbar mounted directly above selected drawing overlays.
+  - Controls: drag handle (`⋮⋮`), line/border color swatch with opacity, fill color swatch (shapes), line width dropdown (`1px`–`4px`), line style dropdown (`Solid`, `Dashed`), lock/unlock toggle (`🔒`/`🔓`), quick settings gear modal trigger (`⚙`), and delete button (`🗑`).
+  - Auto-calculates overlay bounding box via KlineCharts coordinate projection (`convertToPixel`) and positions itself centered above drawings within chart viewport bounds.
+  - Fully wired into `ChartManager` overlay lifecycle (`onSelected`, `onDoubleClick`, `onDeselected`, `handleDrawEnd`, `overlay:clear`, and context-menu deletion).
+  - Emits `overlay:drawing:modified` to automatically trigger history recording and localStorage persistence.
+- **UI Component Skill Documentation (`.agents/skills/ui-component/SKILL.md`)**:
+  - Updated design guidelines with the 3-column form layout specification, swatch guidelines, and floating toolbar integration rules.
+
 ## 2026-09-27
 
 ### Feature: Standardized Modal Chrome for Indicator and Drawing Tool Settings Modals
@@ -29,7 +141,6 @@
   - [`IndicatorSettingsModal.ts`](src/ui/IndicatorSettingsModal.ts)
 - **CSS System & Layout**:
   - Updated [style.css](src/style.css) with shared `vp-settings-modal__*` classes (`__title-edit`, `__btn--template`, `__template-popover`, `__template-option`, `48px` footer height, `32px` button height).
-- **Verification**: `npm run build` — 0 TypeScript compilation errors, asset packaging and obfuscation clean.
 
 ### Fix: Sub-Pane Indicator Legend Position Displacement on Dock Toggle
 
@@ -38,7 +149,6 @@
 - **Fix**:
   - [`ChartManager.ts`](src/chart/ChartManager.ts): Replaced `window.addEventListener('resize', handleViewportResize)` with a `ResizeObserver` on `chartStageEl`. `ResizeObserver` only fires after the browser has finished laying out the observed element, guaranteeing that `getBoundingClientRect()` returns correct values. Mobile orientation / visual-viewport listeners retained on `window`.
   - [`AccountManager.ts`](src/ui/AccountManager.ts): Removed all 7 `window.dispatchEvent(new Event('resize'))` calls from tab-click, close-button, and drag-resize handlers — now redundant since the `ResizeObserver` triggers automatically and correctly.
-- **Verification**: `npm run build` — 0 TypeScript errors, production build clean.
 
 ## 2026-09-26
 
@@ -56,7 +166,6 @@
   - Added **"Save as..."** to prompt for a template name and save custom presets to `localStorage` (`'ystc_chart_settings_templates'`).
   - Added **"Apply defaults"** to quickly restore standard chart defaults.
   - Added saved templates list with single-click preset application and individual preset deletion with a trash button.
-- **Verification**: Verified via `npm run build` (0 TypeScript errors, production obfuscator passing).
 
 ## 2026-09-23
 
@@ -68,7 +177,6 @@
   - Total files in `dist/assets/` reduced from **92 files down to 12 clean files** (an **87% reduction** in file count).
   - Saved **~2.2 MB** in production bundle weight by eliminating unused language workers.
   - Eliminated the 60+ parallel HTTP micro-requests when opening Script Editor on local/gh-pages servers while maintaining 100% feature parity with dev (IntelliSense, hover tooltips, parameter hints, minimap, syntax highlighting, and chart rendering).
-- **Verification**: Verified via `npm run build` (0 TypeScript errors, obfuscation passed) and HTTP serving test (`dist/server.mjs`) returning 200 OK across all chunks.
 
 ### Fix: Monaco Script Editor Minimap Default & Settings Persistence
 - **Root cause**: `monacoManager.ts` defaulted `options.minimap ?? false` on editor initialization, causing the minimap to start hidden. Meanwhile, `ScriptEditorPanel.ts` passed empty `{}` on editor creation and when opening the Settings modal. Because `ScriptEditorModals.ts` checked `currentOptions.minimap !== false`, the checkbox appeared checked (ON) even though the editor had it disabled (OFF). Furthermore, editor options were not persisted to `localStorage`.
@@ -76,14 +184,12 @@
   - Updated `monacoManager.ts` to default `minimap: { enabled: options.minimap ?? true }` in both `createEditor` and `updateOptions`.
   - Added `getEditorOptions()` and `saveEditorOptions()` in `ScriptEditorPanel.ts` reading from and saving to `localStorage` key `'ystc_editor_options'`.
   - Passed persisted options to `createEditor` on load and to `ScriptEditorModals.showSettingsModal`, saving changes whenever the user modifies editor settings.
-- **Verification**: Verified via `npm run build` (0 TypeScript errors) and visual testing in browser. The minimap renders immediately on first load, can be toggled off via Editor Settings, and persists across reloads and tab switches.
 
 ### Fix: Monaco Script Editor IntelliSense Suggest Dropdown & UI Controller Contributions
 - **Root cause**: When disabling the 70+ unnecessary programming languages to reduce bundle size, the project imported `monaco-editor/editor/editor.api.js` directly. In Monaco's architecture, `editor.api.js` provides only the bare headless text rendering engine and excludes all UI controllers and popup widgets. Specifically, `suggestController.js` (which manages the autocomplete/suggest dropdown menu), `hoverContribution.js`, `parameterHints.js`, and `snippetController2.js` were never imported. As a result, even though the background TypeScript worker generated autocompletions, no visual suggest dropdown was registered to render in the DOM.
 - **Fix**:
   - Selectively imported the essential editor UI controller contributions (`suggestController.js`, `suggestInlineCompletions.js`, `hoverContribution.js`, `parameterHints.js`, `snippetController2.js`, `contextmenu.js`, `findController.js`, `folding.js`, `formatActions.js`, `goToCommands.js`) into `loadMonaco()` in [monacoManager.ts](src/scripting/monacoManager.ts).
   - Maintained complete exclusion of all 70+ non-essential programming languages (Python, Java, Rust, C#, etc.), keeping bundle size minimal while restoring full editor interactivity.
-- **Verification**: Verified via `npm run build` (0 TypeScript errors, production obfuscator passing) and browser testing. Typing `ctx.math.` and pressing Ctrl+Space triggers the autocomplete popup dropdown with methods (`sma`, `ema`, `rsi`, `macd`, etc.).
 
 ## 2026-09-22
 
@@ -96,7 +202,6 @@
   - Removed illegal `declare` modifiers from function declarations inside `SDK_DTS_CONTENT` in `ystc-sdk-raw.ts`.
   - Registered canonical Node module declarations (`package.json`, direct `index.d.ts`, ambient `ystc-sdk.d.ts`) with `typeRoots: ['node_modules/@types']` and explicit compiler `paths` mapping.
   - Added full JSDoc hover documentation and parameter hints across all math utilities and SDK interfaces.
-- **Verification**: Verified in both development (`npm run dev`) and production (`npm run build`) environments; all red squiggles on `@ystc/sdk` and `ctx` are eliminated, autocompletion proposals pop up cleanly on `ctx.math.`, and hover documentation functions as expected.
 
 ### Fix: Top Bar Font Size Too Large
 - **Root cause**: `--chrome-top-font` was set to `14px` in `:root` (line 11 of `style.css`), making all TopBar elements (symbol chip, timeframe buttons, action labels) render 2px larger than the `body` base font (`12px`), causing the top bar to appear visually heavier than the rest of the UI.
