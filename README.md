@@ -1,4 +1,4 @@
-# YSTC Charts (Trading Chart for Retail Traders)
+# YSTC Charts - Trading Chart Platform for Retail Traders)
 
 # Changelog
 
