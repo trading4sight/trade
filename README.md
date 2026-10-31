@@ -2,6 +2,25 @@
 
 # Changelog
 
+## 2026-10-31
+
+### Feature: Polymorphic Broker Architecture & Complete BrokerAdapter Unification (src/broker/, src/chart/, src/ui/, SKILL.md)
+
+- **Polymorphic Broker Adapter Contract (`src/broker/types.ts`, `src/broker/BrokerAdapter.ts`)**: Standardized the complete 22-method platform contract on `BrokerAdapter` interface, introducing `BrokerOrderModifyRequest`, `BrokerClosePositionRequest`, and `BrokerHoldingsData`. Added optional lifecycle methods `isConnected?()`, `connectWebSocket?()`, `modifyOrder?()`, `closePosition?()`, `getTrades?()`, and `getHoldings?()`, while making tick callbacks optional for chart and depth subscribers.
+- **OpenAlgo & Fyers Adapter Parity (`src/broker/adapters/OpenAlgoAdapter.ts`, `src/broker/adapters/FyersAdapter.ts`)**: Upgraded both adapters to full contract parity. Added `isConnected()` state verification, lifecycle WebSocket controls (`connectWebSocket`, `disconnectWebSocket`), symbol format parsing supporting `symbol::exchange` and standard formats in `subscribeTicks`/`unsubscribeTicks`, order modification (`modifyOrder`), position squaring (`closePosition`), trade book fetching (`getTrades`), and portfolio holdings retrieval (`getHoldings`).
+- **Polymorphic Charting & Live Tick Stream Isolation (`src/chart/onlineLoader.ts`, `src/chart/chartInit.ts`, `src/chart/ChartManager.ts`)**: Eliminated raw broker client imports from charting core. Replaced broker-specific REST fetches in `onlineLoader` with `activeBroker.getHistory()`. Unified chart candle tick subscriptions in `chartInit` and `ChartManager` through `activeBroker.subscribeTicks()` and `activeBroker.unsubscribeTicks()`. Delegated on-chart overlay drag-modification, cancellation, position squaring, and state synchronization directly to `activeBroker`.
+- **Zero-Branching UI Component Integration (`src/ui/OrderPanel.ts`, `src/ui/OrderModal.ts`, `src/ui/AccountManager.ts`, `src/ui/OptionChainModal.ts`, `src/ui/RightOptionChainView.ts`)**: Stripped hardcoded broker switches (`activeBroker.id === 'fyers' ? ... : ...`) and raw client imports from UI components. Delegated order ticket submissions, DOM ladder trading, market depth resubscriptions, positions/trades/orders/funds/holdings payloads, multi-quote LTP prefilling, and modal option chain tick streams directly to polymorphic `activeBroker` methods.
+- **Dynamic Broker Registration & Settings UI (`src/ui/SettingsModal.ts`)**: Replaced hardcoded broker selector radio buttons and dropdowns with dynamic runtime enumeration from `brokerManager.getAllBrokers()`, automatically rendering any registered broker in settings without requiring UI modifications.
+- **Comprehensive Broker Integration Skill Governance (`.agents/skills/broker-integration/SKILL.md`)**: Updated the skill documentation with the full 22-method `BrokerAdapter` interface specification and documented the zero-branching UI contract ensuring all future broker integrations plug in seamlessly by implementing `BrokerAdapter` and registering with `BrokerManager`.
+
+### Docs: Broker Integration Skill Architecture Synchronization (SKILL.md)
+
+- **24-Hour IndexedDB Master Cache Architecture (`.agents/skills/broker-integration/SKILL.md`)**: Replaced deprecated master file download warnings with the production 24-hour IndexedDB Symbol Master Cache pattern (`ystc_master_cache`), documenting daily public CDN CSV parsing (`NSE_CM`, `BSE_CM`, `MCX_COM`, `NSE_FO`, `BSE_FO`), calendar date-tagging, automatic expiry purges, and sub-2ms local fuzzy search.
+- **Web SDK Teardown Hardening & Index Depth Guard (`.agents/skills/broker-integration/SKILL.md`)**: Codified third-party Web SDK singleton teardown stubs (`isUserClosed: true`, `interval: 0`) to prevent asynchronous interval exceptions on disconnect, and mandated automatic suppression of Level 2 market depth subscriptions for cash index tickers (`-INDEX`).
+- **Commodity Contract Lot Sizing & Unit Scaling Contract (`.agents/skills/broker-integration/SKILL.md`)**: Documented authentic MCX exchange multipliers (`MCX_COMMODITY_SPECS`) and the unit-to-lot order scaling contract converting platform units to broker API lots in `placeOrder` and normalizing incoming positions back to units in `getPositions`.
+- **Commodity Option Chain Underlying & Master Synthesis Fallback (`.agents/skills/broker-integration/SKILL.md`)**: Documented active near-month futures underlying resolution for commodity option chains and master-backed strike ladder synthesis fallback when REST option endpoints return empty.
+- **Right Dock Option Chain & Chart Isolation (`.agents/skills/broker-integration/SKILL.md`)**: Documented polymorphic WebSocket tick streaming for the Right Dock option chain view and chart-isolated quick action Buy/Sell buttons.
+
 ## 2026-10-30
 
 ### Feature: 24-Hour IndexedDB Symbol Master Cache & AI Dynamic Symbol Search (indexedDbCache.ts, symbolMaster.ts, FyersAdapter.ts, quoteService.ts, contractHelper.ts)
