@@ -2,6 +2,17 @@
 
 # Changelog
 
+## 2026-11-07
+
+### UI & Mobile Architecture: TradeCanvas v1.72.2 Patterns, Global Inset Inheritance, Unified Pointer Resizers & Touch Ergonomics (main.ts, style.css, AccountManager.ts, OrderPanel.ts, FloatingDrawingToolbar.ts, OptionChainModal.ts, TopBar.ts, ChartContextMenu.ts, ToolBar.ts, mobile-ui/SKILL.md, ui-component/SKILL.md)
+
+- **Global Root Keyboard Inset Architecture (`src/main.ts`, `src/style.css`)**: Initialized `watchKeyboardInset()` once at application root (`document.documentElement`, `document.body`), dynamically propagating `--keyboard-inset` across the DOM. Updated `.right-panel` on mobile screens (`<= 768px`) with `bottom: var(--keyboard-inset, 0px)` and dynamic viewport height `calc(100dvh - var(--topbar-h) - var(--keyboard-inset, 0px))`, preventing virtual keyboards from occluding order tickets, inputs, or CTA buttons without per-modal watcher boilerplate.
+- **Unified Pointer Resizers with Keyboard Accessibility (`src/ui/AccountManager.ts`, `src/ui/OrderPanel.ts`)**: Refactored bottom dock and right slideout panel resizers from desktop-only `mousedown`/`mousemove` to unified pointer events (`pointerdown`, `pointermove`, `pointerup`, `pointercancel`) with `setPointerCapture`. Added ARIA `role="separator"` and keyboard step navigation (`ArrowUp`/`ArrowDown` for bottom dock, `ArrowLeft`/`ArrowRight` for right panel) with `tabindex="0"`.
+- **Floating Toolbars Pointer Capture & CSS Color Tokens (`src/ui/FloatingDrawingToolbar.ts`, `src/ui/OptionChainModal.ts`, `src/ui/AccountManager.ts`)**: Converted `FloatingDrawingToolbar` and `OptionChainModal` header drag listeners to pointer events with pointer capture release and `pointercancel` handling. Replaced hardcoded `#2962ff` with `var(--accent-blue)` and `#fff` in `AccountManager.ts` with `var(--bg-primary)`.
+- **Mobile TopBar Trade Entry & Context Menu Coordinates Guard (`src/ui/TopBar.ts`, `src/ui/ChartContextMenu.ts`)**: Added a dedicated "Trade / Order Ticket" trigger to the mobile `moreMenu` bottom sheet in `TopBar.ts`, enabling 1-tap Order Panel access on mobile viewports. Guarded inline `menu.style.left` and `menu.style.top` in `ChartContextMenu.ts` with `window.innerWidth > 480` and converted click-outside dismissal to `pointerdown`.
+- **Option Chain Touch-Coarse Detection & CSS Cleanup (`src/style.css`, `src/ui/ToolBar.ts`)**: Added `@media (hover: none) and (pointer: coarse)` detection in `style.css` to reveal quick Buy/Sell actions on ATM and tapped strike rows on touch devices. Removed conflicting `.right-column` rule block at 768px and fixed the off-by-one breakpoint in `ToolBar.ts` to `window.innerWidth <= 768`.
+- **Agent Skills Governance Synchronization (`.agents/skills/ui-component/SKILL.md`, `.agents/skills/mobile-ui/SKILL.md`)**: Updated UI and Mobile skills with root keyboard inset inheritance, unified pointer contracts, keyboard accessibility on resizers, `@media (hover: none) and (pointer: coarse)` standards, and normalized mobile breakpoint to 480px.
+
 ## 2026-11-06
 
 ### Mobile UI: TradeCanvas Comparative Modernization, Multi-Chart Adaptive Tabs, Container Narrow Mode & Gesture Ergonomics (narrowMode.ts, MultiChartWorkspace.ts, chartSettings.ts, SymbolSearchModal.ts, IndicatorModal.ts, GoToDateModal.ts, style.css, main.ts, mobile-ui/SKILL.md)
