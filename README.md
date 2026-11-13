@@ -4,6 +4,28 @@
 
 ## 2026-11-13
 
+### Natural Language Order Placement & Account Tools for Live & Paper Broker (tradingNexusService.ts, aiTools.ts, LiteRTLMRunner.ts, AINexusView.ts, AINexusHelpModal.ts, style.css)
+
+- **Dedicated Nexus AI Trading Service (`src/scripting/ai/tradingNexusService.ts`)**: Built a unified multi-engine trading service bridging conversational AI prompts with both Paper Trading (`PaperBroker`) and Live Broker (`BrokerManager`) engines:
+  - `executeGetFunds()`: Queries spendable margin, cash balance, used margin, realized P&L, unrealized P&L, and account equity.
+  - `executeGetPositions()`: Retrieves active open positions with side (LONG/SHORT), lot size, buy/sell average price, current LTP, and live P&L.
+  - `executeGetOrders()`: Queries pending order books across both engines.
+  - `parseOrderCommand()`: Parses conversational trading instructions (action, quantity, symbol, order type, product type, and target engine) with automatic fallback to active chart symbol and exchange.
+  - `executeClosePosition()` & `executeCloseAllPositions()`: Closes single or all open positions with immediate broker routing.
+  - `executeCancelAllOrders()`: Cancels all open/pending limit and bracket orders.
+  - `formatOrderCardHtml()`: Renders interactive, human-in-the-loop HTML order cards with color-coded action badges, estimated order value, and required margin calculation via `marginHelper.ts`.
+- **Autonomous Intent Detection & Execution Interceptor (`src/scripting/ai/aiTools.ts`)**: Extended `detectUserChartIntent()` and `executeIntent()` to support `funds`, `positions`, `orders`, `order`, `close_position`, `close_all`, and `cancel_orders`. Features zero-latency (<10ms) local execution (even without an LLM model loaded into WebGPU VRAM) and transformed tool execution tags into sleek, themed UI timeline pills (`.ai-tool-pill--funds`, `.ai-tool-pill--positions`, `.ai-tool-pill--orders`, `.ai-tool-pill--order`, `.ai-tool-pill--close`, `.ai-tool-pill--cancel`).
+- **Safety-First Interactive Order Confirmation Cards (`src/ui/AINexusView.ts`, `src/style.css`)**: Implemented human-in-the-loop order safety apparatus in accordance with OpenAlgo architecture and platform rules. Mutating trade orders draft an interactive confirmation card requiring explicit trader click (`[ ✓ Confirm & Place Order ]` or `[ ✕ Dismiss ]`), completely preventing silent or accidental live broker executions. Integrated event delegation for asynchronous broker routing and real-time order status pill feedback.
+- **Quick Action Ribbon Trading Chips (`src/ui/AINexusView.ts`)**: Added quick action buttons for `💰 Funds`, `📊 Positions`, and `📋 Orders` directly to the Nexus AI input ribbon for instant single-click account queries.
+- **AI System Prompt & Autonomous Tool Calibration (`src/scripting/ai/LiteRTLMRunner.ts`)**: Updated the system prompt in `LiteRTLMRunner` with autonomous trading and account tool specifications (`get_funds`, `get_positions`, `get_orders`, `place_order`, `close_position`, `close_all_positions`, `cancel_all_orders`) and few-shot examples for natural language trade workflows.
+- **Nexus AI Technical Reference & Guide Synchronization (`src/ui/AINexusHelpModal.ts`)**: Added comprehensive documentation for Function 15 (*Natural Language Order Placement & Safety Confirmation*) and Function 16 (*Account Funds, Positions & Order Management*) with query patterns and practical examples.
+
+### Script Editor Integration & AI Nexus Math Parity (AccountManager.ts, LiteRTLMRunner.ts, SDKHelpModal.ts)
+
+- **Bottom Dock Automatic Expansion on Code Insertion (`src/ui/AccountManager.ts`)**: Subscribed `AccountManager` to `script:insert` and `bottom-dock:open` events on `eventBus`. When a trader clicks `[ 📝 Insert into Script Editor ]` from AI Nexus or inspects code from the indicator catalog, the bottom drawer automatically switches to the `script` tab and expands to display the Monaco Editor with the newly injected code.
+- **AI Nexus Math Parity & SDK Capabilities Alignment (`src/scripting/ai/LiteRTLMRunner.ts`)**: Updated the system prompt in `LiteRTLMRunner` to educate the on-device AI model about the complete suite of 22+ math utilities on `ctx.math` (including `rma`, `alma`, `dema`, `tema`, `hma`, `vwma`, session-anchored `vwap`, `trueRange`, `change`, `cci`, and `bb`), axis precision control (`precision`, `shouldFormatBigNumber`), and the expanded Pine Script parity reference library.
+- **SDK Documentation Synchronization (`src/ui/SDKHelpModal.ts`)**: Synchronized the built-in SDK documentation modal with `ystc-sdk.d.ts` and `sdk.ts`, adding documentation and signatures for `rma`, `alma`, `dema`, `tema`, `hma`, `vwma`, `change`, `trueRange`, `cci`, and `bb` under the Built-in Technical Math section.
+
 ### Pine Script Technical Parity Alignments & Audit Fixes (sdk.ts, oscillators.ts, structureAndTrend.ts, volumeAndFlow.ts)
 
 - **Wilder RMA Exponential Smoothing in RSI (`src/scripting/sdk/sdk.ts`, `oscillators.ts`)**: Replaced the unweighted 14-bar rolling SMA calculation in `math.rsi` with J. Welles Wilder's Running Moving Average (`ta.rma`) matching Pine Script v6 item #48. Eliminates spurious 100.00 spikes during zero-down-bar consolidation windows and aligns RSI, Stochastic RSI, Connors RSI, and RSI Divergence with TradingView values.
