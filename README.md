@@ -1,7 +1,7 @@
 # YSTC Charts (Trading Chart Platform for Retail Traders)
 
 # Changelog
-dfdf
+
 ## 2026-11-21
 
 ### Fix: Historical Trade Navigation & Table Scroll Reset in Strategy Tester (ChartManager.ts, StrategyTesterPanel.ts, ScriptRuntime.ts)
